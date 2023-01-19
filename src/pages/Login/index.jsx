@@ -18,17 +18,24 @@ export const Login = () => {
   const {
     register,
     handleSubmit,
-    setError,
     formState: { errors, isValid }
   } = useForm({
     defaultValues: {
       email: '',
       passwordHash: ''
     },
+    mode: 'onChange'
   });
 
-  const onSubmit = (values) => {
-    dispatch(fetchAuth(values));
+  const onSubmit = async (values) => {
+    const data = await dispatch(fetchAuth(values));
+    if (!data.payload) {
+      alert('Authorization error');
+    }
+
+    if ('token' in data.payload) {
+      window.localStorage.setItem('token', data.payload.token)
+    }
   }
 
   if (isAuth) {
@@ -58,7 +65,7 @@ export const Login = () => {
           {...register('passwordHash', { required: 'Please, type password' })}
           fullWidth
         />
-        <Button size="large" type="submit" variant="contained" fullWidth>
+        <Button size="large" type="submit" variant="contained" disabled={!isValid} fullWidth>
           Войти
         </Button>
       </form>
