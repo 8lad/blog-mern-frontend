@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from '../../axios';
+import { APP_ROUTE_POSTS, APP_ROUTE_TAGS } from '../../constants';
 
 const initialState = {
     posts: {
@@ -13,18 +14,18 @@ const initialState = {
 };
 
 export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
-    const { data } = await axios.get('/posts');
+    const { data } = await axios.get(APP_ROUTE_POSTS);
     return data;
 }
 );
 
 export const fetchTags = createAsyncThunk('posts/fetchTags', async () => {
-    const { data } = await axios.get('/tags');
+    const { data } = await axios.get(APP_ROUTE_TAGS);
     return data;
 });
 
 export const fetchRemovePost = createAsyncThunk('posts/fetchRemovePost', async (id) => {
-    axios.delete(`/posts/${id}`);
+    axios.delete(`${APP_ROUTE_POSTS}/${id}`);
 })
 
 const postSlice = createSlice({

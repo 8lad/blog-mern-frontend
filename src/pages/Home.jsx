@@ -24,6 +24,7 @@ export const Home = () => {
     dispatch(fetchTags());
   }, [dispatch]);
 
+  console.log(process.env.REACT_APP_API_URL, 'env');
   return (
     <>
       <Tabs style={{ marginBottom: 15 }} value={0} aria-label="basic tabs example">
@@ -37,7 +38,7 @@ export const Home = () => {
               key={obj._id}
               id={obj._id}
               title={obj.title}
-              imageUrl={obj.imageUrl ? `http://localhost:4444${obj.imageUrl}` : NoImage}
+              imageUrl={obj.imageUrl ? `${process.env.REACT_APP_API_URL}${obj.imageUrl}` : NoImage}
               user={obj.user}
               createdAt={obj.createdAt}
               viewsCount={obj.viewsCount}

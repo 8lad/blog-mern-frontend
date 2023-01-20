@@ -3,6 +3,7 @@ import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectIsAuth, logout } from '../../redux/slices/auth';
+import { APP_ROUTE_ADD_POST, APP_ROUTE_LOGIN, APP_ROUTE_REGISTER, APP_ROUTE_ROOT } from '../../constants';
 
 import styles from './Header.module.scss';
 import Container from '@mui/material/Container';
@@ -20,26 +21,26 @@ export const Header = () => {
     <div className={styles.root}>
       <Container maxWidth="lg">
         <div className={styles.inner}>
-          <Link className={styles.logo} to="/">
-            <div>ARCHAKOV BLOG</div>
+          <Link className={styles.logo} to={APP_ROUTE_ROOT}>
+            <div>MERN BLOG</div>
           </Link>
           <div className={styles.buttons}>
             {isAuth ? (
               <>
-                <Link to="/add-post">
-                  <Button variant="contained">Написать статью</Button>
+                <Link to={APP_ROUTE_ADD_POST}>
+                  <Button variant="contained">Write a post</Button>
                 </Link>
                 <Button onClick={onClickLogout} variant="contained" color="error">
-                  Выйти
+                  Log out
                 </Button>
               </>
             ) : (
               <>
-                <Link to="/login">
-                  <Button variant="outlined">Войти</Button>
+                <Link to={APP_ROUTE_LOGIN}>
+                  <Button variant="outlined">Log in</Button>
                 </Link>
-                <Link to="/register">
-                  <Button variant="contained">Создать аккаунт</Button>
+                <Link to={APP_ROUTE_REGISTER}>
+                  <Button variant="contained">Sing in</Button>
                 </Link>
               </>
             )}

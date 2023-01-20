@@ -8,17 +8,18 @@ import TagIcon from "@mui/icons-material/Tag";
 import ListItemText from "@mui/material/ListItemText";
 import Skeleton from "@mui/material/Skeleton";
 import { Link } from 'react-router-dom';
+import { APP_ROUTE_TAGS } from '../constants';
 
 import { SideBlock } from "./SideBlock";
 
 export const TagsBlock = ({ items, isLoading = true }) => {
   return (
-    <SideBlock title="Тэги">
+    <SideBlock title="Tags">
       <List>
         {(isLoading ? [...Array(5)] : items).map((name, i) => (
           <Link
             style={{ textDecoration: "none", color: "black" }}
-            to={`/tags/${name}`}
+            to={`${APP_ROUTE_TAGS}/${name}`}
           >
             <ListItem key={i} disablePadding>
               <ListItemButton>

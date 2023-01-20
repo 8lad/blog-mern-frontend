@@ -13,6 +13,7 @@ import { UserInfo } from '../UserInfo';
 import { PostSkeleton } from './Skeleton';
 import { useDispatch } from 'react-redux';
 import { fetchRemovePost } from '../../redux/slices/posts';
+import { APP_ROUTE_POSTS, APP_ROUTE_EDIT_POST, APP_ROUTE_TAG } from '../../constants';
 
 export const Post = ({
   id,
@@ -45,7 +46,7 @@ export const Post = ({
     <div className={clsx(styles.root, { [styles.rootFull]: isFullPost })}>
       {isEditable && (
         <div className={styles.editButtons}>
-          <Link to={`/posts/${id}/edit`}>
+          <Link to={`${APP_ROUTE_POSTS}/${id}${APP_ROUTE_EDIT_POST}`}>
             <IconButton color="primary">
               <EditIcon />
             </IconButton>
@@ -71,12 +72,12 @@ export const Post = ({
         <UserInfo {...user} additionalText={createdAt} />
         <div className={styles.indention}>
           <h2 className={clsx(styles.title, { [styles.titleFull]: isFullPost })}>
-            {isFullPost ? title : <Link to={`/posts/${id}`}>{title}</Link>}
+            {isFullPost ? title : <Link to={`${APP_ROUTE_POSTS}/${id}`}>{title}</Link>}
           </h2>
           <ul className={styles.tags}>
             {tags.map((name) => (
               <li key={name}>
-                <Link to={`/tag/${name}`}>#{name}</Link>
+                <Link to={`${APP_ROUTE_TAG}/${name}`}>#{name}</Link>
               </li>
             ))}
           </ul>

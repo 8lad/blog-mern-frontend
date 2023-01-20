@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from '../../axios';
+import { APP_ROUTE_AUTH, APP_ROUTE_REGISTER, APP_ROUTE_LOGIN, APP_ROUTE_ME } from '../../constants';
 
 
 const initialState = {
@@ -8,17 +9,17 @@ const initialState = {
 };
 
 export const fetchAuth = createAsyncThunk('auth/fetchAuth', async (params) => {
-    const { data } = await axios.post('/auth/login', params);
+    const { data } = await axios.post(`${APP_ROUTE_AUTH}${APP_ROUTE_LOGIN}`, params);
     return data
 });
 
 export const fetchAuthMe = createAsyncThunk('auth/fetchAuthMe', async () => {
-    const { data } = await axios.get('/auth/me');
+    const { data } = await axios.get(`${APP_ROUTE_AUTH}${APP_ROUTE_ME}`);
     return data;
 });
 
 export const fetchRegister = createAsyncThunk('auth/fetchRegister', async (params) => {
-    const { data } = await axios.post('auth/register', params);
+    const { data } = await axios.post(`${APP_ROUTE_AUTH}${APP_ROUTE_REGISTER}`, params);
     return data;
 });
 

@@ -7,6 +7,7 @@ import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectIsAuth } from '../../redux/slices/auth';
 import axios from '../../axios';
+import { APP_ROUTE_POSTS, APP_ROUTE_UPLOAD, APP_ROUTE_ROOT } from '../../constants';
 
 import 'easymde/dist/easymde.min.css';
 import styles from './AddPost.module.scss';
@@ -29,7 +30,7 @@ export const AddPost = () => {
       const formData = new FormData();
       const file = event.target.files[0];
       formData.append('image', file);
-      const { data } = await axios.post('/upload', formData);
+      const { data } = await axios.post(APP_ROUTE_UPLOAD, formData);
       setImageUrl(data.url);
 
     } catch (error) {
@@ -51,7 +52,7 @@ export const AddPost = () => {
       spellChecker: false,
       maxHeight: '400px',
       autofocus: true,
-      placeholder: 'Введите текст...',
+      placeholder: 'Write a text...',
       status: false,
       autosave: {
         enabled: true,
@@ -66,11 +67,11 @@ export const AddPost = () => {
       setIsLoading(true);
 
       const fields = { text, title, tags: tags.split(','), imageUrl };
-      const { data } = isEditing ? await axios.patch(`/posts/${id}`, fields) : await axios.post('/posts', fields);
+      const { data } = isEditing ? await axios.patch(`${APP_ROUTE_POSTS}/${id}`, fields) : await axios.post(APP_ROUTE_POSTS, fields);
 
 
       const _id = isEditing ? id : data._id;
-      navigate(`/posts/${_id}`);
+      navigate(`${APP_ROUTE_POSTS}/${_id}`);
     } catch (error) {
       console.warn('Post loading error');
       alert('Post loading error');
@@ -79,7 +80,7 @@ export const AddPost = () => {
 
   useEffect(() => {
     if (id) {
-      axios.get(`/posts/${id}`).then(({ data: { text, tags, imageUrl, title } }) => {
+      axios.get(`${APP_ROUTE_POSTS}/${id}`).then(({ data: { text, tags, imageUrl, title } }) => {
         setText(text);
         setTags(tags);
         setImageUrl(imageUrl);
@@ -96,15 +97,15 @@ export const AddPost = () => {
   return (
     <Paper style={{ padding: 30 }}>
       <Button variant="outlined" size="large" onClick={() => inputFileRef.current.click()}>
-        Загрузить превью
+        Upload an image
       </Button>
       <input ref={inputFileRef} type="file" onChange={handleChangeFile} hidden />
       {imageUrl && (
         <>
           <Button variant="contained" color="error" onClick={onClickRemoveImage}>
-            Удалить
+            Delete
           </Button>
-          <img className={styles.image} src={`http://localhost:4444${imageUrl}`} alt="Uploaded" />
+          <img className={styles.image} src={`${process.env.REACT_APP_API_URL}${imageUrl}`} alt="Uploaded" />
         </>
       )}
       <br />
@@ -112,7 +113,7 @@ export const AddPost = () => {
       <TextField
         classes={{ root: styles.title }}
         variant="standard"
-        placeholder="Заголовок статьи..."
+        placeholder="The post title..."
         value={title}
         onChange={(event) => setTitle(event.target.value)}
         fullWidth
@@ -120,7 +121,7 @@ export const AddPost = () => {
       <TextField
         classes={{ root: styles.tags }}
         variant="standard"
-        placeholder="Тэги"
+        placeholder="Tags"
         value={tags}
         onChange={(event) => setTags(event.target.value)}
         fullWidth
@@ -130,8 +131,8 @@ export const AddPost = () => {
         <Button size="large" variant="contained" onClick={onSubmit}>
           {isEditing ? 'Edit' : 'Publish'}
         </Button>
-        <Link to="/">
-          <Button size="large">Отмена</Button>
+        <Link to={APP_ROUTE_ROOT}>
+          <Button size="large">Cancel</Button>
         </Link>
       </div>
     </Paper>
