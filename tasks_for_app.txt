@@ -1,4 +1,0 @@
-1) Create .env and constants
-2) Use english everywhere
-3) Add eslint prettier husky
-4) Correct create at date format

@@ -1,20 +1,22 @@
 import React, { useEffect } from "react";
-import Container from "@mui/material/Container";
+import { useDispatch } from "react-redux";
 import { Route, Routes } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchAuthMe, selectIsAuth } from "./redux/slices/auth";
-import {
-	APP_ROUTE_POSTS,
-	APP_ROUTE_EDIT_POST,
-	APP_ROUTE_ROOT
-} from "./constants";
+import Container from "@mui/material/Container";
 
+import { fetchAuthMe } from "./redux/slices/auth";
 import { Header } from "./components";
-import { Home, FullPost, Registration, AddPost, Login } from "./pages";
+import {
+	APP_ROUTE_ADD_POST,
+	APP_ROUTE_EDIT_POST,
+	APP_ROUTE_LOGIN,
+	APP_ROUTE_POSTS,
+	APP_ROUTE_REGISTER,
+	APP_ROUTE_ROOT,
+} from "./constants";
+import { AddPost, FullPost, Home, Login, Registration } from "./pages";
 
 function App() {
 	const dispatch = useDispatch();
-	const isAuth = useSelector(selectIsAuth);
 
 	useEffect(() => {
 		dispatch(fetchAuthMe());
@@ -26,14 +28,20 @@ function App() {
 			<Container maxWidth="lg">
 				<Routes>
 					<Route path={APP_ROUTE_ROOT} element={<Home />} />
-					<Route path={`${APP_ROUTE_POSTS}/:id`} element={<FullPost />} />
 					<Route
-						path={`${APP_ROUTE_POSTS}/:id/${APP_ROUTE_EDIT_POST}`}
+						path={`${APP_ROUTE_POSTS}/:id`}
+						element={<FullPost />}
+					/>
+					<Route
+						path={`${APP_ROUTE_POSTS}/:id${APP_ROUTE_EDIT_POST}`}
 						element={<AddPost />}
 					/>
-					<Route path="/add-post" element={<AddPost />} />
-					<Route path="/login" element={<Login />} />
-					<Route path="/register" element={<Registration />} />
+					<Route path={APP_ROUTE_ADD_POST} element={<AddPost />} />
+					<Route path={APP_ROUTE_LOGIN} element={<Login />} />
+					<Route
+						path={APP_ROUTE_REGISTER}
+						element={<Registration />}
+					/>
 				</Routes>
 			</Container>
 		</>
