@@ -1,16 +1,16 @@
-import React from 'react';
+import React from "react";
+import { Link } from "react-router-dom";
+import TagIcon from "@mui/icons-material/Tag";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import Skeleton from "@mui/material/Skeleton";
 
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import TagIcon from '@mui/icons-material/Tag';
-import ListItemText from '@mui/material/ListItemText';
-import Skeleton from '@mui/material/Skeleton';
-import { Link } from 'react-router-dom';
-import { APP_ROUTE_TAGS } from '../constants';
+import { APP_ROUTE_TAGS } from "../constants";
 
-import { SideBlock } from './SideBlock';
+import { SideBlock } from "./SideBlock";
 
 export const TagsBlock = ({ items, isLoading = true }) => {
 	return (
@@ -18,8 +18,9 @@ export const TagsBlock = ({ items, isLoading = true }) => {
 			<List>
 				{(isLoading ? [...Array(5)] : items).map((name, i) => (
 					<Link
-						style={{ textDecoration: 'none', color: 'black' }}
+						style={{ textDecoration: "none", color: "black" }}
 						to={`${APP_ROUTE_TAGS}/${name}`}
+						key={`${name}${i}`}
 					>
 						<ListItem key={i} disablePadding>
 							<ListItemButton>

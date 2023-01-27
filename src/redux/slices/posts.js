@@ -1,20 +1,22 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+
 import axios from "../../axios";
 import { APP_ROUTE_POSTS, APP_ROUTE_TAGS } from "../../constants";
 
 const initialState = {
 	posts: {
 		items: [],
-		status: "loading"
+		status: "loading",
+		sorting: "new"
 	},
 	tags: {
 		items: [],
-		status: "loading"
-	}
+		status: "loading",
+	},
 };
 
-export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
-	const { data } = await axios.get(APP_ROUTE_POSTS);
+export const fetchPosts = createAsyncThunk("posts/fetchPosts", async (sortingType) => {
+	const { data } = await axios.get(`${APP_ROUTE_POSTS}?sorting=${sortingType}`);
 	return data;
 });
 
@@ -33,7 +35,11 @@ export const fetchRemovePost = createAsyncThunk(
 const postSlice = createSlice({
 	name: "posts",
 	initialState,
-	reducers: {},
+	reducers: {
+		setPostSorting: (state, action) => {
+			state.posts.sorting = action.payload;
+		}
+	},
 	extraReducers: {
 		[fetchPosts.pending]: (state) => {
 			state.posts.items = [];
@@ -64,8 +70,9 @@ const postSlice = createSlice({
 			state.posts.items = state.posts.items.filter(
 				(post) => post._id !== action.meta.arg
 			);
-		}
-	}
+		},
+	},
 });
 
 export const postsReducer = postSlice.reducer;
+export const { setPostSorting } = postSlice.actions;

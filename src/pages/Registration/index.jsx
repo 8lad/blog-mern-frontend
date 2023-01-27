@@ -1,13 +1,14 @@
 import React from "react";
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
-import Paper from "@mui/material/Paper";
-import Button from "@mui/material/Button";
-import Avatar from "@mui/material/Avatar";
-import { useDispatch, useSelector } from "react-redux";
-import { selectIsAuth, fetchRegister } from "../../redux/slices/auth";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import Paper from "@mui/material/Paper";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+
+import { fetchRegister, selectIsAuth } from "../../redux/slices/auth";
 
 import styles from "./Login.module.scss";
 
@@ -15,14 +16,14 @@ export const Registration = () => {
 	const {
 		register,
 		handleSubmit,
-		formState: { errors, isValid }
+		formState: { errors, isValid },
 	} = useForm({
 		defaultValues: {
 			email: "",
 			passwordHash: "",
-			fullName: ""
+			fullName: "",
 		},
-		mode: "onChange"
+		mode: "onChange",
 	});
 
 	const isAuth = useSelector(selectIsAuth);
@@ -55,7 +56,7 @@ export const Registration = () => {
 					helperText={errors.fullName?.message}
 					error={Boolean(errors.fullName?.message)}
 					{...register("fullName", {
-						required: "Please, enter your full name"
+						required: "Please, enter your full name",
 					})}
 					fullWidth
 				/>
@@ -64,7 +65,9 @@ export const Registration = () => {
 					label="E-Mail"
 					helperText={errors.email?.message}
 					error={Boolean(errors.email?.message)}
-					{...register("email", { required: "Please, enter your email" })}
+					{...register("email", {
+						required: "Please, enter your email",
+					})}
 					fullWidth
 				/>
 				<TextField
@@ -73,7 +76,7 @@ export const Registration = () => {
 					helperText={errors.passwordHash?.message}
 					error={Boolean(errors.passwordHash?.message)}
 					{...register("passwordHash", {
-						required: "Please, enter new password"
+						required: "Please, enter new password",
 					})}
 					fullWidth
 				/>

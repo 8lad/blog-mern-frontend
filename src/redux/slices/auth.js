@@ -1,15 +1,16 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+
 import axios from "../../axios";
 import {
 	APP_ROUTE_AUTH,
-	APP_ROUTE_REGISTER,
 	APP_ROUTE_LOGIN,
-	APP_ROUTE_ME
+	APP_ROUTE_ME,
+	APP_ROUTE_REGISTER,
 } from "../../constants";
 
 const initialState = {
 	data: null,
-	status: "loading"
+	status: "loading",
 };
 
 export const fetchAuth = createAsyncThunk("auth/fetchAuth", async (params) => {
@@ -42,7 +43,7 @@ const authSlice = createSlice({
 	reducers: {
 		logout: (state) => {
 			state.data = null;
-		}
+		},
 	},
 	extraReducers: {
 		[fetchAuth.pending]: (state) => {
@@ -79,8 +80,8 @@ const authSlice = createSlice({
 		[fetchRegister.rejected]: (state) => {
 			state.data = null;
 			state.status = "error";
-		}
-	}
+		},
+	},
 });
 
 export const selectIsAuth = (state) => Boolean(state.auth.data);

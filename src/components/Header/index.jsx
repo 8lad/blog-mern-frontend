@@ -1,17 +1,18 @@
-import React from 'react';
-import Button from '@mui/material/Button';
-import { Link } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { selectIsAuth, logout } from '../../redux/slices/auth';
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+
 import {
 	APP_ROUTE_ADD_POST,
 	APP_ROUTE_LOGIN,
 	APP_ROUTE_REGISTER,
-	APP_ROUTE_ROOT
-} from '../../constants';
+	APP_ROUTE_ROOT,
+} from "../../constants";
+import { logout, selectIsAuth } from "../../redux/slices/auth";
 
-import styles from './Header.module.scss';
-import Container from '@mui/material/Container';
+import styles from "./Header.module.scss";
 
 export const Header = () => {
 	const isAuth = useSelector(selectIsAuth);
@@ -19,7 +20,7 @@ export const Header = () => {
 
 	const onClickLogout = () => {
 		dispatch(logout());
-		window.localStorage.removeItem('token');
+		window.localStorage.removeItem("token");
 	};
 
 	return (
@@ -33,7 +34,9 @@ export const Header = () => {
 						{isAuth ? (
 							<>
 								<Link to={APP_ROUTE_ADD_POST}>
-									<Button variant="contained">Write a post</Button>
+									<Button variant="contained">
+										Write a post
+									</Button>
 								</Link>
 								<Button
 									onClick={onClickLogout}
