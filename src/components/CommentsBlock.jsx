@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Avatar from "@mui/material/Avatar";
 import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
@@ -6,14 +7,29 @@ import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemText from "@mui/material/ListItemText";
 import Skeleton from "@mui/material/Skeleton";
+import Typography from "@mui/material/Typography";
+
+import NoAvatar from "../assets/hacker.png";
+import { Index } from "../components/AddComment";
+import { fetchComments } from "../redux/slices/comments";
 
 import { SideBlock } from "./SideBlock";
 
-export const CommentsBlock = ({ items, children, isLoading = true }) => {
+export const CommentsBlock = ({ postId }) => {
+
+	const dispatch = useDispatch();
+	const { status, comments } = useSelector(state => state.comments);
+	const isLoading = status === "loading";
+	const currentComments = !postId ? comments : comments.filter(comment => comment.postId === postId);
+
+	useEffect(() => {
+		dispatch(fetchComments());
+	}, []);
+
 	return (
-		<SideBlock title="Comments">
-			<List>
-				{(isLoading ? [...Array(5)] : items).map((obj, index) => (
+		<SideBlock title="Comments" >
+			{currentComments.length ? (<List>
+				{(isLoading ? [...Array(5)] : currentComments).map((obj, index) => (
 					<React.Fragment key={index}>
 						<ListItem alignItems="flex-start">
 							<ListItemAvatar>
@@ -26,7 +42,7 @@ export const CommentsBlock = ({ items, children, isLoading = true }) => {
 								) : (
 									<Avatar
 										alt={obj.user.fullName}
-										src={obj.user.avatarUrl}
+										src={obj.user.avatarUrl ?? NoAvatar}
 									/>
 								)}
 							</ListItemAvatar>
@@ -58,8 +74,12 @@ export const CommentsBlock = ({ items, children, isLoading = true }) => {
 						<Divider variant="inset" component="li" />
 					</React.Fragment>
 				))}
-			</List>
-			{children}
+			</List>) : <Typography variant="h5" component="h5" sx={{
+				padding: "10px 20px 30px 15px"
+			}}>
+				You don`t have any comments yet
+			</Typography>}
+			{postId && <Index postId={postId} />}
 		</SideBlock>
 	);
 };

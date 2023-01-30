@@ -9,7 +9,12 @@ import {
 } from "../../constants";
 
 const initialState = {
-	data: null,
+	data: {
+		_id: "",
+		fullName: "",
+		email: "",
+		avatarUrl: "",
+	},
 	status: "loading",
 };
 
