@@ -9,3 +9,4 @@ export const APP_ROUTE_TAGS = "/tags";
 export const APP_ROUTE_TAG = "/tag";
 export const APP_ROUTE_AUTH = "/auth";
 export const APP_ROUTE_ME = "/me";
+export const APP_ROUTE_COMMENTS = "/comments";
