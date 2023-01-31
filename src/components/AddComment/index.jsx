@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
 import NoAvatar from "../../assets/hacker.png";
-import { fetchComments, fetchSingleCommentData } from "../../redux/slices/comments";
+import { fetchSingleCommentData } from "../../redux/slices/comments";
 
 import styles from "./AddComment.module.scss";
 
@@ -28,7 +28,6 @@ export const Index = ({ postId }) => {
 		};
 		dispatch(fetchSingleCommentData(data));
 		setCommentText("");
-		dispatch(fetchComments());
 	};
 
 	return (

@@ -6,12 +6,12 @@ import { APP_ROUTE_POSTS, APP_ROUTE_TAGS } from "../../constants";
 const initialState = {
 	posts: {
 		items: [],
-		status: "loading",
+		postsStatus: "loading",
 		sorting: "new"
 	},
 	tags: {
 		items: [],
-		status: "loading",
+		tagsStatus: "loading",
 	},
 };
 
@@ -43,28 +43,28 @@ const postSlice = createSlice({
 	extraReducers: {
 		[fetchPosts.pending]: (state) => {
 			state.posts.items = [];
-			state.posts.status = "loading";
+			state.posts.postsStatus = "loading";
 		},
 		[fetchPosts.fulfilled]: (state, action) => {
 			state.posts.items = action.payload;
-			state.posts.status = "loaded";
+			state.posts.postsStatus = "loaded";
 		},
 		[fetchPosts.rejected]: (state) => {
 			state.posts.items = [];
-			state.posts.status = "error";
+			state.posts.postsStatus = "error";
 		},
 
 		[fetchTags.pending]: (state) => {
 			state.tags.items = [];
-			state.tags.status = "loading";
+			state.tags.tagsStatus = "loading";
 		},
 		[fetchTags.fulfilled]: (state, action) => {
-			state.tags.status = "loaded";
 			state.tags.items = action.payload;
+			state.tags.tagsStatus = "loaded";
 		},
 		[fetchTags.rejected]: (state) => {
-			state.tags.status = "error";
 			state.tags.items = [];
+			state.tags.tagsStatus = "error";
 		},
 		[fetchRemovePost.pending]: (state, action) => {
 			state.posts.items = state.posts.items.filter(

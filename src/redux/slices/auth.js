@@ -15,7 +15,7 @@ const initialState = {
 		email: "",
 		avatarUrl: "",
 	},
-	status: "loading",
+	authStatus: "loading",
 };
 
 export const fetchAuth = createAsyncThunk("auth/fetchAuth", async (params) => {
@@ -53,38 +53,38 @@ const authSlice = createSlice({
 	extraReducers: {
 		[fetchAuth.pending]: (state) => {
 			state.data = null;
-			state.status = "loading";
+			state.authStatus = "loading";
 		},
 		[fetchAuth.fulfilled]: (state, action) => {
 			state.data = action.payload;
-			state.status = "loaded";
+			state.authStatus = "loaded";
 		},
 		[fetchAuth.rejected]: (state) => {
 			state.data = null;
-			state.status = "error";
+			state.authStatus = "error";
 		},
 		[fetchAuthMe.pending]: (state) => {
 			state.data = null;
-			state.status = "loading";
+			state.authStatus = "loading";
 		},
 		[fetchAuthMe.fulfilled]: (state, action) => {
 			state.data = action.payload;
-			state.status = "loaded";
+			state.authStatus = "loaded";
 		},
 		[fetchAuthMe.rejected]: (state) => {
 			state.data = null;
-			state.status = "error";
+			state.authStatus = "error";
 		},
 		[fetchRegister.pending]: (state) => {
-			state.status = "loading";
+			state.authStatus = "loading";
 		},
 		[fetchRegister.fulfilled]: (state, action) => {
 			state.data = action.payload;
-			state.status = "loaded";
+			state.authStatus = "loaded";
 		},
 		[fetchRegister.rejected]: (state) => {
 			state.data = null;
-			state.status = "error";
+			state.authStatus = "error";
 		},
 	},
 });

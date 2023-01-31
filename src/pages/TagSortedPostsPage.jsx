@@ -1,37 +1,46 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 
 import NoImage from "../assets/no-image.png";
-import { CommentsBlock } from "../components/CommentsBlock";
-import { CustomTabs } from "../components/CustomTabs/CustomTabs";
 import { Post } from "../components/Post";
 import { TagsBlock } from "../components/TagsBlock";
-import { fetchComments } from "../redux/slices/comments";
-import { fetchPosts, fetchTags } from "../redux/slices/posts";
+import { fetchPosts } from "../redux/slices/posts";
+import { fetchTags } from "../redux/slices/posts";
 
-export const Home = () => {
+export const TagSortedPostsPage = () => {
+
 	const dispatch = useDispatch();
-	const { posts, tags } = useSelector((state) => state.posts);
+	const { postsStatus, posts, tagsStatus, tags } = useSelector(state => state.posts);
+	const { comments } = useSelector(state => state.comments);
+	const { tag } = useParams();
+	const currentPageTag = tag.toUpperCase();
+	const isPostsLoading = postsStatus === "loading";
+	const isTagsLoading = tagsStatus === "loading";
+	const currentTagPosts = posts.items.filter(({ tags }) => tags.some(item => item === tag));
 	const userData = useSelector((state) => state.auth.data);
-	const { comments } = useSelector((state) => state.comments);
-	const { sorting } = posts;
-	const isPostsLoading = posts.postsStatus === "loading";
-	const isTagsLoading = tags.tagsStatus === "loading";
 
 	useEffect(() => {
-		dispatch(fetchPosts(sorting));
+		dispatch(fetchPosts());
 		dispatch(fetchTags());
-		dispatch(fetchComments());
-	}, [dispatch, sorting]);
-
+	}, [dispatch]);
 
 	return (
 		<>
-			<CustomTabs />
+			<Typography
+				variant="h3"
+				component="h4"
+				sx={{
+					padding: "10px 20px 30px 15px",
+				}}
+			>
+				#{currentPageTag}
+			</Typography>
 			<Grid container spacing={4}>
 				<Grid xs={8} item>
-					{(isPostsLoading ? [...Array(5)] : posts.items).map((obj, index) =>
+					{(isPostsLoading ? [...Array(5)] : currentTagPosts).map((obj, index) =>
 						isPostsLoading ? (
 							<Post key={index} isLoading />
 						) : (
@@ -56,7 +65,6 @@ export const Home = () => {
 				</Grid>
 				<Grid xs={4} item>
 					<TagsBlock items={tags.items} isLoading={isTagsLoading} />
-					<CommentsBlock />
 				</Grid>
 			</Grid>
 		</>

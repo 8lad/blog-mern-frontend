@@ -29,8 +29,8 @@ export const Registration = () => {
 	const isAuth = useSelector(selectIsAuth);
 	const dispatch = useDispatch();
 
-	const onSubmit = async (values) => {
-		const data = await dispatch(fetchRegister(values));
+	const onSubmit = (values) => {
+		const data = dispatch(fetchRegister(values));
 
 		if ("token" in data.payload) {
 			window.localStorage.setItem("token", data.payload.token);

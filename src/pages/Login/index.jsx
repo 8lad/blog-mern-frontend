@@ -30,8 +30,8 @@ export const Login = () => {
 		mode: "onChange",
 	});
 
-	const onSubmit = async (values) => {
-		const data = await dispatch(fetchAuth(values));
+	const onSubmit = (values) => {
+		const data = dispatch(fetchAuth(values));
 		if (!data.payload) {
 			notify();
 		}

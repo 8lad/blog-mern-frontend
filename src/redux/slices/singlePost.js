@@ -4,7 +4,7 @@ import axios from "../../axios";
 import { APP_ROUTE_POSTS, APP_ROUTE_UPLOAD } from "../../constants";
 
 const initialState = {
-	status: "loading",
+	singlePostStatus: "loading",
 	post: {
 		_id: "",
 		title: "",
@@ -51,60 +51,60 @@ const singlePost = createSlice({
 	reducers: {
 		setText: (state, action) => {
 			state.post.text = action.payload;
-			state.status = "loaded";
+			state.singlePostStatus = "loaded";
 		},
 		setTitle: (state, action) => {
 			state.post.title = action.payload;
-			state.status = "loaded";
+			state.singlePostStatus = "loaded";
 		},
 		setTags: (state, action) => {
 			state.post.tags = action.payload;
-			state.status = "loaded";
+			state.singlePostStatus = "loaded";
 		},
 		removeImageUrl: (state) => {
 			state.post.imageUrl = "";
-			state.status = "loaded";
+			state.singlePostStatus = "loaded";
 		},
 		removeSinglePost: (state) => {
 			state.post = { ...initialState.post };
-			state.status = "loaded";
+			state.singlePostStatus = "loaded";
 		},
 	},
 	extraReducers: {
 		[fetchSinglePost.pending]: (state) => {
 			state.post = { ...initialState.post };
-			state.status = "loading";
+			state.singlePostStatus = "loading";
 		},
 		[fetchSinglePost.fulfilled]: (state, action) => {
 			state.post = action.payload;
-			state.status = "loaded";
+			state.singlePostStatus = "loaded";
 		},
 		[fetchSinglePost.rejected]: (state) => {
 			state.post = { ...initialState.post };
-			state.status = "error";
+			state.singlePostStatus = "error";
 		},
 		[fetchSinglePostData.pending]: (state) => {
 			state.post = { ...initialState.post };
-			state.status = "loading";
+			state.singlePostStatus = "loading";
 		},
 		[fetchSinglePostData.fulfilled]: (state) => {
-			state.status = "loaded";
+			state.singlePostStatus = "loaded";
 		},
 		[fetchSinglePostData.rejected]: (state) => {
 			state.post = { ...initialState.post };
-			state.status = "error";
+			state.singlePostStatus = "error";
 		},
 		[fetchImageUrl.pending]: (state) => {
 			state.post.imageUrl = "";
-			state.status = "loading";
+			state.singlePostStatus = "loading";
 		},
 		[fetchImageUrl.fulfilled]: (state, action) => {
 			state.post.imageUrl = action.payload;
-			state.status = "loaded";
+			state.singlePostStatus = "loaded";
 		},
 		[fetchImageUrl.rejected]: (state) => {
 			state.post.imageUrl = "";
-			state.status = "error";
+			state.singlePostStatus = "error";
 		},
 	},
 });
