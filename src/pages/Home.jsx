@@ -41,7 +41,7 @@ export const Home = () => {
 								title={obj.title}
 								imageUrl={
 									obj.imageUrl
-										? `${process.env.REACT_APP_API_URL}${obj.imageUrl}`
+										? `${import.meta.env.VITE_API_URL}${obj.imageUrl}`
 										: NoImage
 								}
 								user={obj.user}
