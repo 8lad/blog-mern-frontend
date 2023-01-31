@@ -32,7 +32,7 @@ export const FullPost = () => {
 			<Post
 				id={post._id}
 				title={post.title}
-				imageUrl={`${process.env.REACT_APP_API_URL}${post.imageUrl}`}
+				imageUrl={`${import.meta.env.VITE_API_URL}${post.imageUrl}`}
 				user={post.user}
 				createdAt={post.createdAt}
 				viewsCount={post.viewsCount}

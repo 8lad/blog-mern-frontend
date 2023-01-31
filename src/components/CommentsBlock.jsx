@@ -28,7 +28,7 @@ export const CommentsBlock = ({ postId }) => {
 
 	return (
 		<SideBlock title="Comments" >
-			{currentComments.length ? (<List>
+			{currentComments.length ? (<List sx={{maxHeigth: "500px", overflowY: "auto"}}>
 				{(isLoading ? [...Array(5)] : currentComments).map((obj, index) => (
 					<React.Fragment key={index}>
 						<ListItem alignItems="flex-start">
