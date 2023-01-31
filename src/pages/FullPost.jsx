@@ -14,9 +14,10 @@ export const FullPost = () => {
 	const { id } = useParams();
 	const notify = () => toast("Loading post error");
 	const dispatch = useDispatch();
-	const { status, post } = useSelector(state => state.singlePost);
-	const isLoading = status === "loading";
-	const hasError = status === "error";
+	const { singlePostStatus, post } = useSelector(state => state.singlePost);
+	const { comments } = useSelector((state) => state.comments);
+	const isLoading = singlePostStatus === "loading";
+	const hasError = singlePostStatus === "error";
 
 	useEffect(() => {
 		if (hasError) return notify();
@@ -36,7 +37,7 @@ export const FullPost = () => {
 				user={post.user}
 				createdAt={post.createdAt}
 				viewsCount={post.viewsCount}
-				commentsCount={3}
+				commentsCount={comments.filter(comment => comment.postId === post._id).length}
 				tags={post.tags}
 				isFullPost
 			>

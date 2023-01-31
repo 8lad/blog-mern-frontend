@@ -12,7 +12,7 @@ import NoImage from "../../assets/no-image.png";
 import {
 	APP_ROUTE_EDIT_POST,
 	APP_ROUTE_POSTS,
-	APP_ROUTE_TAG,
+	APP_ROUTE_TAGS,
 } from "../../constants";
 import { fetchRemovePost } from "../../redux/slices/posts";
 import { ConfirmationPopup } from "../ConfirmationPopup/ConfirmationPopup";
@@ -107,7 +107,7 @@ export const Post = ({
 						<ul className={styles.tags}>
 							{tags.map((name) => (
 								<li key={name}>
-									<Link to={`${APP_ROUTE_TAG}/${name}`}>
+									<Link to={`${APP_ROUTE_TAGS}/${name}`}>
 										#{name}
 									</Link>
 								</li>

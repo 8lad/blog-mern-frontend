@@ -5,7 +5,7 @@ import { APP_ROUTE_COMMENTS } from "../../constants";
 
 const initialState = {
 	comments: [],
-	status: "loading"
+	commentsStatus: "loading"
 };
 
 export const fetchComments = createAsyncThunk("comments/fetchComments", async () => {
@@ -17,9 +17,10 @@ export const fetchComments = createAsyncThunk("comments/fetchComments", async ()
 	}
 });
 
-export const fetchSingleCommentData = createAsyncThunk("comments/fetchSingleCommentData", async (data) => {
+export const fetchSingleCommentData = createAsyncThunk("comments/fetchSingleCommentData", async (commentData) => {
 	try {
-		await axios.post(APP_ROUTE_COMMENTS, data);
+		const { data } = await axios.post(APP_ROUTE_COMMENTS, commentData);
+		return data;
 	} catch (error) {
 		console.log(error);
 	}
@@ -32,24 +33,25 @@ const commentsSlice = createSlice({
 	extraReducers: {
 		[fetchComments.pending]: (state) => {
 			state.comments = [];
-			state.status = "loading";
+			state.commentsStatus = "loading";
 		},
 		[fetchComments.fulfilled]: (state, action) => {
 			state.comments = action.payload;
-			state.status = "loaded";
+			state.commentsStatus = "loaded";
 		},
 		[fetchComments.rejected]: (state) => {
 			state.comments = [];
-			state.status = "error";
+			state.commentsStatus = "error";
 		},
 		[fetchSingleCommentData.pending]: (state) => {
-			state.status = "loading";
+			state.commentsStatus = "loading";
 		},
-		[fetchSingleCommentData.fulfilled]: (state) => {
-			state.status = "loaded";
+		[fetchSingleCommentData.fulfilled]: (state, action) => {
+			state.comments = action.payload;
+			state.commentsStatus = "loaded";
 		},
 		[fetchSingleCommentData.rejected]: (state) => {
-			state.status = "error";
+			state.commentsStatus = "error";
 		}
 	}
 });

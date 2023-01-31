@@ -12,8 +12,9 @@ import {
 	APP_ROUTE_POSTS,
 	APP_ROUTE_REGISTER,
 	APP_ROUTE_ROOT,
+	APP_ROUTE_TAGS
 } from "./constants";
-import { AddPost, FullPost, Home, Login, Registration } from "./pages";
+import { AddPost, FullPost, Home, Login, Registration, TagSortedPostsPage } from "./pages";
 
 function App() {
 	const dispatch = useDispatch();
@@ -42,6 +43,7 @@ function App() {
 						path={APP_ROUTE_REGISTER}
 						element={<Registration />}
 					/>
+					<Route path={`${APP_ROUTE_TAGS}/:tag`} element={<TagSortedPostsPage />} />
 				</Routes>
 			</Container>
 		</>

@@ -17,15 +17,15 @@ import { SideBlock } from "./SideBlock";
 
 export const CommentsBlock = ({ postId }) => {
 	const dispatch = useDispatch();
-	const { status, comments } = useSelector((state) => state.comments);
-	const isLoading = status === "loading";
+	const { commentsStatus, comments } = useSelector((state) => state.comments);
+	const isLoading = commentsStatus === "loading";
 	const currentComments = !postId
 		? comments
 		: comments.filter((comment) => comment.postId === postId);
 
 	useEffect(() => {
 		dispatch(fetchComments());
-	}, []);
+	}, [dispatch]);
 
 	return (
 		<SideBlock title="Comments">
