@@ -10,6 +10,11 @@ export default defineConfig({
 	},
 	server: {
 		open: true,
-		port: 4000
-	}
+		port: 4000,
+	},
+	resolve: {
+		alias: {
+			"@okta/okta-auth-js": "@okta/okta-auth-js/dist/okta-auth-js.umd.js",
+		},
+	},
 });

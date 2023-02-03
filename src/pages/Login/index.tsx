@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import Button from "@mui/material/Button";
@@ -8,13 +8,18 @@ import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 
-import { fetchAuth, selectIsAuth } from "../../redux/slices/auth";
+import {
+	fetchAuth,
+	selectIsAuth,
+	userAuthInputData,
+} from "../../redux/slices/auth";
+import { useAppDispatch } from "../../redux/store";
 
 import "react-toastify/dist/ReactToastify.css";
 import styles from "./Login.module.scss";
 
 export const Login = () => {
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 	const isAuth = useSelector(selectIsAuth);
 	const notify = () => toast("Authorization error");
 
@@ -30,8 +35,8 @@ export const Login = () => {
 		mode: "onChange",
 	});
 
-	const onSubmit = (values) => {
-		const data = dispatch(fetchAuth(values));
+	const onSubmit = async (values: userAuthInputData) => {
+		const data = await dispatch(fetchAuth(values));
 		if (!data.payload) {
 			notify();
 		}
@@ -56,7 +61,9 @@ export const Login = () => {
 						className={styles.field}
 						label="E-Mail"
 						type="email"
-						{...register("email", { required: "Please, type email" })}
+						{...register("email", {
+							required: "Please, type email",
+						})}
 						error={Boolean(errors.email?.message)}
 						helperText={errors.email?.message}
 						fullWidth
@@ -64,8 +71,8 @@ export const Login = () => {
 					<TextField
 						className={styles.field}
 						label="Пароль"
-						error={Boolean(errors.password?.message)}
-						helperText={errors.password?.message}
+						error={Boolean(errors.passwordHash?.message)}
+						helperText={errors.passwordHash?.message}
 						{...register("passwordHash", {
 							required: "Please, type password",
 						})}

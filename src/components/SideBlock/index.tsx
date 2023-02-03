@@ -4,7 +4,12 @@ import Typography from "@mui/material/Typography";
 
 import styles from "./SideBlock.module.scss";
 
-export const SideBlock = ({ title, children }) => {
+interface SideBlockProps {
+	title: string;
+	children: React.ReactNode;
+}
+
+export const SideBlock: React.FC<SideBlockProps> = ({ title, children }) => {
 	return (
 		<Paper classes={{ root: styles.root }}>
 			<Typography variant="h6" classes={{ root: styles.title }}>

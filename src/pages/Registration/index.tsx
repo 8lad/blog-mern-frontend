@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -8,7 +8,12 @@ import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 
-import { fetchRegister, selectIsAuth } from "../../redux/slices/auth";
+import {
+	fetchRegister,
+	selectIsAuth,
+	userSingInData,
+} from "../../redux/slices/auth";
+import { useAppDispatch } from "../../redux/store";
 
 import styles from "./Login.module.scss";
 
@@ -27,10 +32,10 @@ export const Registration = () => {
 	});
 
 	const isAuth = useSelector(selectIsAuth);
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 
-	const onSubmit = (values) => {
-		const data = dispatch(fetchRegister(values));
+	const onSubmit = async (values: userSingInData) => {
+		const data = await dispatch(fetchRegister(values));
 
 		if ("token" in data.payload) {
 			window.localStorage.setItem("token", data.payload.token);

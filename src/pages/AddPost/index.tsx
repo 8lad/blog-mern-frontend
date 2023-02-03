@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import SimpleMDE from "react-simplemde-editor";
 import Button from "@mui/material/Button";
@@ -19,27 +19,30 @@ import {
 	setText,
 	setTitle,
 } from "../../redux/slices/singlePost";
+import { RootState, useAppDispatch } from "../../redux/store";
 
 import "easymde/dist/easymde.min.css";
 import styles from "./AddPost.module.scss";
 
-export const AddPost = () => {
+export const AddPost: React.FC = () => {
 	const navigate = useNavigate();
-	const inputFileRef = useRef(null);
-	const dispatch = useDispatch();
+	const inputFileRef = useRef<HTMLInputElement | null>(null);
+	const dispatch = useAppDispatch();
 	const { imageUrl, text, title, tags } = useSelector(
-		(state) => state.singlePost.post
+		(state: RootState) => state.singlePost.post
 	);
 
 	const isAuth = useSelector(selectIsAuth);
 	const isPostAbleToSend = useSelector(isReadyToSend);
 	const { id } = useParams();
 	const isEditing = Boolean(id);
-	const handleChangeFile = (event) => {
+	const handleChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const formData = new FormData();
-		const file = event.target.files[0];
-		formData.append("image", file);
-		dispatch(fetchImageUrl(formData));
+		if (event.target.files) {
+			const file = event.target.files[0];
+			formData.append("image", file);
+			dispatch(fetchImageUrl(formData));
+		}
 	};
 
 	const removeImage = () => {
@@ -50,7 +53,7 @@ export const AddPost = () => {
 		dispatch(removeSinglePost());
 	};
 
-	const onSetText = useCallback((value) => {
+	const onSetText = useCallback((value: string) => {
 		dispatch(setText(value));
 	}, []);
 
@@ -64,14 +67,22 @@ export const AddPost = () => {
 			autosave: {
 				enabled: true,
 				delay: 1000,
-				uniqueId: id ?? Date.now(),
+				uniqueId: id ?? Date.now().toString(),
 			},
 		}),
 		[]
 	);
 
 	const onSubmit = () => {
-		const fields = { text, title, tags: Array.isArray(tags) ? tags : tags.replaceAll(",", " ").split(" "), imageUrl, _id: id };
+		const fields = {
+			text,
+			title,
+			tags: Array.isArray(tags)
+				? tags
+				: (tags as string).replaceAll(",", " ").split(" "),
+			imageUrl,
+			_id: id ?? Date.now().toString(),
+		};
 
 		dispatch(fetchSinglePostData(fields));
 
@@ -91,7 +102,9 @@ export const AddPost = () => {
 			<Button
 				variant="outlined"
 				size="large"
-				onClick={() => inputFileRef.current.click()}
+				onClick={() =>
+					inputFileRef.current ? inputFileRef.current.click() : false
+				}
 			>
 				Upload an image
 			</Button>

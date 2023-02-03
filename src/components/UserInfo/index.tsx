@@ -5,8 +5,20 @@ import { formatDate } from "../../utils/formatDate";
 
 import styles from "./UserInfo.module.scss";
 
-export const UserInfo = ({ avatarUrl, fullName, additionalText }) => {
-	const createdAtText = formatDate(additionalText);
+interface UserInfoProps {
+	fullName: string;
+	additionalText?: string;
+	avatarUrl?: string;
+}
+
+export const UserInfo: React.FC<UserInfoProps> = ({
+	avatarUrl,
+	fullName,
+	additionalText,
+}) => {
+	const createdAtText = additionalText
+		? formatDate(additionalText)
+		: "No data";
 
 	return (
 		<div className={styles.root}>
@@ -16,9 +28,11 @@ export const UserInfo = ({ avatarUrl, fullName, additionalText }) => {
 				alt={
 					avatarUrl
 						? fullName
-						: " < a href=\"https://www.flaticon.com/free-icons/hacker\" title=\"hacker icons\">Hacker icons created by Freepik - Flaticon</>"
+						: " < a href=https://www.flaticon.com/free-icons/hacker title=hacker icons>Hacker icons created by Freepik - Flaticon</>"
 				}
-				onError={(e) => e.target.src = HackerAvatar}
+				onError={(
+					event: React.SyntheticEvent<HTMLImageElement, Event>
+				) => ((event.target as HTMLImageElement).src = HackerAvatar)}
 			/>
 			<div className={styles.userDetails}>
 				<span className={styles.userName}>{fullName}</span>

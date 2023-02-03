@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import CommentIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 import DeleteIcon from "@mui/icons-material/Clear";
@@ -14,7 +13,9 @@ import {
 	APP_ROUTE_POSTS,
 	APP_ROUTE_TAGS,
 } from "../../constants";
+import { userDataInterface } from "../../redux/reduxTypes";
 import { fetchRemovePost } from "../../redux/slices/posts";
+import { useAppDispatch } from "../../redux/store";
 import { ConfirmationPopup } from "../ConfirmationPopup/ConfirmationPopup";
 import { UserInfo } from "../UserInfo";
 
@@ -22,7 +23,22 @@ import { PostSkeleton } from "./Skeleton";
 
 import styles from "./Post.module.scss";
 
-export const Post = ({
+interface PostProps {
+	id: string;
+	title: string;
+	imageUrl: string;
+	user: userDataInterface;
+	viewsCount: number;
+	commentsCount: number;
+	tags: string[];
+	children?: React.ReactNode;
+	isLoading: boolean;
+	isEditable?: boolean;
+	createdAt?: string;
+	isFullPost?: boolean;
+}
+
+export const Post: React.FC<PostProps> = ({
 	id,
 	title,
 	createdAt,
@@ -34,9 +50,9 @@ export const Post = ({
 	children,
 	isFullPost,
 	isLoading,
-	isEditable,
+	isEditable = false,
 }) => {
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 	const [isPopupOpen, setIsPopupOpen] = useState(false);
 
 	if (isLoading) {
@@ -52,10 +68,14 @@ export const Post = ({
 
 	return (
 		<>
-			<div className={clsx(styles.root, { [styles.rootFull]: isFullPost })}>
+			<div
+				className={clsx(styles.root, { [styles.rootFull]: isFullPost })}
+			>
 				{isEditable && (
 					<div className={styles.editButtons}>
-						<Link to={`${APP_ROUTE_POSTS}/${id}${APP_ROUTE_EDIT_POST}`}>
+						<Link
+							to={`${APP_ROUTE_POSTS}/${id}${APP_ROUTE_EDIT_POST}`}
+						>
 							<IconButton color="primary">
 								<EditIcon />
 							</IconButton>
@@ -72,7 +92,9 @@ export const Post = ({
 						})}
 						src={imageUrl}
 						alt={title}
-						onError={(e) => e.target.src = NoImage}
+						onError={(
+							event: React.SyntheticEvent<HTMLImageElement, Event>
+						) => ((event.target as HTMLImageElement).src = NoImage)}
 					/>
 				) : (
 					<img
@@ -86,7 +108,7 @@ export const Post = ({
 						}}
 						src={NoImage}
 						alt={
-							"https://www.freeiconspng.com/img/23492\" title=\"from freeiconspng.com\" src=\"https://www.freeiconspng.com/uploads/no--icon-13.png"
+							"https://www.freeiconspng.com/img/23492 title=from freeiconspng.com src=https://www.freeiconspng.com/uploads/no--icon-13.png"
 						}
 					/>
 				)}
@@ -101,7 +123,9 @@ export const Post = ({
 							{isFullPost ? (
 								title
 							) : (
-								<Link to={`${APP_ROUTE_POSTS}/${id}`}>{title}</Link>
+								<Link to={`${APP_ROUTE_POSTS}/${id}`}>
+									{title}
+								</Link>
 							)}
 						</h2>
 						<ul className={styles.tags}>
