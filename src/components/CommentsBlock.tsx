@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Avatar from "@mui/material/Avatar";
 import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
@@ -12,12 +12,19 @@ import Typography from "@mui/material/Typography";
 import NoAvatar from "../assets/hacker.png";
 import { Index } from "../components/AddComment";
 import { fetchComments } from "../redux/slices/comments";
+import { RootState, useAppDispatch } from "../redux/store";
 
 import { SideBlock } from "./SideBlock";
 
-export const CommentsBlock = ({ postId }) => {
-	const dispatch = useDispatch();
-	const { commentsStatus, comments } = useSelector((state) => state.comments);
+interface CommentsBlockProps {
+	postId?: string;
+}
+
+export const CommentsBlock: React.FC<CommentsBlockProps> = ({ postId }) => {
+	const dispatch = useAppDispatch();
+	const { commentsStatus, comments } = useSelector(
+		(state: RootState) => state.comments
+	);
 	const isLoading = commentsStatus === "loading";
 	const currentComments = !postId
 		? comments

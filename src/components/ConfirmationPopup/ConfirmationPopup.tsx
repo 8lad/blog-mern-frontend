@@ -6,8 +6,21 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
-export const ConfirmationPopup = ({ isOpen, setIsOpen, actionButtonClick, title, text }) => {
+interface ConfirmationPopupProps {
+	isOpen: boolean;
+	setIsOpen: (arg: boolean) => void;
+	actionButtonClick: () => void;
+	title: string;
+	text?: string;
+}
 
+export const ConfirmationPopup: React.FC<ConfirmationPopupProps> = ({
+	isOpen,
+	setIsOpen,
+	actionButtonClick,
+	title,
+	text,
+}) => {
 	const handleClickActon = () => {
 		setIsOpen(false);
 		actionButtonClick();
@@ -25,17 +38,19 @@ export const ConfirmationPopup = ({ isOpen, setIsOpen, actionButtonClick, title,
 				aria-labelledby="alert-dialog-title"
 				aria-describedby="alert-dialog-description"
 			>
-				<DialogTitle id="alert-dialog-title">
-					{title}
-				</DialogTitle>
-				{text && <DialogContent>
-					<DialogContentText id="alert-dialog-description">
-						{text}
-					</DialogContentText>
-				</DialogContent>}
+				<DialogTitle id="alert-dialog-title">{title}</DialogTitle>
+				{text && (
+					<DialogContent>
+						<DialogContentText id="alert-dialog-description">
+							{text}
+						</DialogContentText>
+					</DialogContent>
+				)}
 				<DialogActions>
 					<Button onClick={handleClose}>Cancel</Button>
-					<Button onClick={handleClickActon} autoFocus>Ok</Button>
+					<Button onClick={handleClickActon} autoFocus>
+						Ok
+					</Button>
 				</DialogActions>
 			</Dialog>
 		</div>

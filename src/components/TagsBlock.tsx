@@ -12,7 +12,15 @@ import { APP_ROUTE_TAGS } from "../constants";
 
 import { SideBlock } from "./SideBlock";
 
-export const TagsBlock = ({ items, isLoading = true }) => {
+interface TagsBlockProps {
+	items: string[];
+	isLoading?: boolean;
+}
+
+export const TagsBlock: React.FC<TagsBlockProps> = ({
+	items,
+	isLoading = true,
+}) => {
 	return (
 		<SideBlock title="Tags">
 			<List>

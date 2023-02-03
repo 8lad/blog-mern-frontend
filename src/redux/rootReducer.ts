@@ -9,5 +9,5 @@ export const rootReducer = combineReducers({
 	posts: postsReducer,
 	auth: authReducer,
 	comments: commentsReducer,
-	singlePost: singlePostReducer
+	singlePost: singlePostReducer,
 });

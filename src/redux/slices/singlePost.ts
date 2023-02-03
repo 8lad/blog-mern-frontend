@@ -1,9 +1,16 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import axios from "../../axios";
 import { APP_ROUTE_POSTS, APP_ROUTE_UPLOAD } from "../../constants";
+import { baseSinglePost, requestStatuses, singlePost } from "../reduxTypes";
+import { RootState } from "../store";
 
-const initialState = {
+interface InitialState {
+	singlePostStatus: requestStatuses;
+	post: singlePost;
+}
+
+const initialState: InitialState = {
 	singlePostStatus: "loading",
 	post: {
 		_id: "",
@@ -12,16 +19,21 @@ const initialState = {
 		tags: [],
 		viewsCount: 0,
 		imageUrl: "",
-		user: {},
+		user: {
+			email: "",
+			avatarUrl: "",
+			_id: "",
+			fullName: "",
+		},
 		createdAt: "",
 		updatedAt: "",
-		__v: 0
-	}
+		__v: 0,
+	},
 };
 
 export const fetchSinglePost = createAsyncThunk(
 	"singlePost/fetchSinglePost",
-	async (id) => {
+	async (id: string) => {
 		const { data } = await axios.get(`${APP_ROUTE_POSTS}/${id}`);
 		return data;
 	}
@@ -29,7 +41,7 @@ export const fetchSinglePost = createAsyncThunk(
 
 export const fetchSinglePostData = createAsyncThunk(
 	"singlePost/fetchSinglePostData",
-	async (postData) => {
+	async (postData: baseSinglePost) => {
 		const { data } = postData._id
 			? await axios.patch(`${APP_ROUTE_POSTS}/${postData._id}`, postData)
 			: await axios.post(APP_ROUTE_POSTS, postData);
@@ -39,7 +51,7 @@ export const fetchSinglePostData = createAsyncThunk(
 
 export const fetchImageUrl = createAsyncThunk(
 	"singlePost/fetchImageUrl",
-	async (formData) => {
+	async (formData: FormData) => {
 		const { data } = await axios.post(APP_ROUTE_UPLOAD, formData);
 		return data.url;
 	}
@@ -70,42 +82,45 @@ const singlePost = createSlice({
 			state.singlePostStatus = "loaded";
 		},
 	},
-	extraReducers: {
-		[fetchSinglePost.pending]: (state) => {
+	extraReducers: (builder) => {
+		builder.addCase(fetchSinglePost.pending, (state) => {
 			state.post = { ...initialState.post };
 			state.singlePostStatus = "loading";
-		},
-		[fetchSinglePost.fulfilled]: (state, action) => {
-			state.post = action.payload;
-			state.singlePostStatus = "loaded";
-		},
-		[fetchSinglePost.rejected]: (state) => {
+		});
+		builder.addCase(
+			fetchSinglePost.fulfilled,
+			(state, action: PayloadAction<singlePost>) => {
+				state.post = action.payload;
+				state.singlePostStatus = "loaded";
+			}
+		);
+		builder.addCase(fetchSinglePost.rejected, (state) => {
 			state.post = { ...initialState.post };
 			state.singlePostStatus = "error";
-		},
-		[fetchSinglePostData.pending]: (state) => {
+		});
+		builder.addCase(fetchSinglePostData.pending, (state) => {
 			state.post = { ...initialState.post };
 			state.singlePostStatus = "loading";
-		},
-		[fetchSinglePostData.fulfilled]: (state) => {
+		});
+		builder.addCase(fetchSinglePostData.fulfilled, (state) => {
 			state.singlePostStatus = "loaded";
-		},
-		[fetchSinglePostData.rejected]: (state) => {
+		});
+		builder.addCase(fetchSinglePostData.rejected, (state) => {
 			state.post = { ...initialState.post };
 			state.singlePostStatus = "error";
-		},
-		[fetchImageUrl.pending]: (state) => {
+		});
+		builder.addCase(fetchImageUrl.pending, (state) => {
 			state.post.imageUrl = "";
 			state.singlePostStatus = "loading";
-		},
-		[fetchImageUrl.fulfilled]: (state, action) => {
+		});
+		builder.addCase(fetchImageUrl.fulfilled, (state, action) => {
 			state.post.imageUrl = action.payload;
 			state.singlePostStatus = "loaded";
-		},
-		[fetchImageUrl.rejected]: (state) => {
+		});
+		builder.addCase(fetchImageUrl.rejected, (state) => {
 			state.post.imageUrl = "";
 			state.singlePostStatus = "error";
-		},
+		});
 	},
 });
 
@@ -113,7 +128,7 @@ export const isReadyToSend = ({
 	singlePost: {
 		post: { text, title, tags },
 	},
-}) => Boolean(text && title && tags.length);
+}: RootState) => Boolean(text && title && tags.length);
 export const singlePostReducer = singlePost.reducer;
 export const { setText, setTitle, setTags, removeImageUrl, removeSinglePost } =
 	singlePost.actions;
