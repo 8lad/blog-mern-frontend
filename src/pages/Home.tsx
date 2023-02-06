@@ -4,6 +4,7 @@ import Grid from "@mui/material/Grid";
 
 import { CommentsBlock } from "../components/CommentsBlock";
 import { CustomTabs } from "../components/CustomTabs/CustomTabs";
+import { ErrorBlock } from "../components/ErrorBlock/ErrorBlock";
 import { Post } from "../components/Post";
 import { PostSkeleton } from "../components/Post/Skeleton";
 import { TagsBlock } from "../components/TagsBlock";
@@ -20,12 +21,19 @@ export const Home = () => {
 	const { sorting } = posts;
 	const isPostsLoading = posts.postsStatus === "loading";
 	const isTagsLoading = tags.tagsStatus === "loading";
+	const { errorMessage } = useSelector(
+		(state: RootState) => state.posts.posts
+	);
 
 	useEffect(() => {
 		dispatch(fetchPosts(sorting));
 		dispatch(fetchTags());
 		dispatch(fetchComments());
 	}, [dispatch, sorting]);
+
+	if (errorMessage) {
+		return <ErrorBlock title={errorMessage} />;
+	}
 
 	return (
 		<>

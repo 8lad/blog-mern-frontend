@@ -54,17 +54,16 @@ export const Post: React.FC<PostProps> = ({
 }) => {
 	const dispatch = useAppDispatch();
 	const [isPopupOpen, setIsPopupOpen] = useState(false);
-
-	if (isLoading) {
-		return <PostSkeleton />;
-	}
-
 	const onClickRemove = () => {
 		setIsPopupOpen(true);
 	};
 	const removePostById = () => {
 		dispatch(fetchRemovePost(id));
 	};
+
+	if (isLoading) {
+		return <PostSkeleton />;
+	}
 
 	return (
 		<>

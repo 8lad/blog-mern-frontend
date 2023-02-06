@@ -9,10 +9,12 @@ interface InitialState {
 		items: singlePost[];
 		postsStatus: requestStatuses;
 		sorting: postsSorting;
+		errorMessage: string;
 	};
 	tags: {
 		items: string[];
 		tagsStatus: requestStatuses;
+		errorMessage: string;
 	};
 }
 
@@ -21,34 +23,54 @@ const initialState: InitialState = {
 		items: [],
 		postsStatus: "loading",
 		sorting: "new",
+		errorMessage: "",
 	},
 	tags: {
 		items: [],
 		tagsStatus: "loading",
+		errorMessage: "",
 	},
 };
 
-export const fetchPosts = createAsyncThunk(
-	"posts/fetchPosts",
-	async (sortingType?: string) => {
+export const fetchPosts = createAsyncThunk<
+	singlePost[],
+	string | void,
+	{ rejectValue: string }
+>("posts/fetchPosts", async (sortingType, thunkApi) => {
+	try {
 		const { data } = await axios.get(
 			`${APP_ROUTE_POSTS}?sorting=${sortingType}`
 		);
 		return data;
+	} catch (error) {
+		return thunkApi.rejectWithValue((error as Error).message);
 	}
-);
-
-export const fetchTags = createAsyncThunk("posts/fetchTags", async () => {
-	const { data } = await axios.get(APP_ROUTE_TAGS);
-	return data;
 });
 
-export const fetchRemovePost = createAsyncThunk(
-	"posts/fetchRemovePost",
-	async (id: string) => {
-		axios.delete(`${APP_ROUTE_POSTS}/${id}`);
+export const fetchTags = createAsyncThunk<
+	string[],
+	void,
+	{ rejectValue: string }
+>("posts/fetchTags", async (_, thunkApi) => {
+	try {
+		const { data } = await axios.get(APP_ROUTE_TAGS);
+		return data;
+	} catch (error) {
+		return thunkApi.rejectWithValue((error as Error).message);
 	}
-);
+});
+
+export const fetchRemovePost = createAsyncThunk<
+	void,
+	string,
+	{ rejectValue: string }
+>("posts/fetchRemovePost", async (id: string, thunkApi) => {
+	try {
+		axios.delete(`${APP_ROUTE_POSTS}/${id}`);
+	} catch (error) {
+		return thunkApi.rejectWithValue((error as Error).message);
+	}
+});
 
 const postSlice = createSlice({
 	name: "posts",
@@ -62,33 +84,45 @@ const postSlice = createSlice({
 		builder.addCase(fetchPosts.pending, (state) => {
 			state.posts.items = [];
 			state.posts.postsStatus = "loading";
+			state.posts.errorMessage = "";
 		});
 		builder.addCase(
 			fetchPosts.fulfilled,
 			(state, action: PayloadAction<singlePost[]>) => {
 				state.posts.items = action.payload;
 				state.posts.postsStatus = "loaded";
+				state.posts.errorMessage = "";
 			}
 		);
-		builder.addCase(fetchPosts.rejected, (state) => {
-			state.posts.items = [];
-			state.posts.postsStatus = "error";
-		});
+		builder.addCase(
+			fetchPosts.rejected,
+			(state, action: PayloadAction<unknown>) => {
+				state.posts.items = [];
+				state.posts.postsStatus = "error";
+				state.posts.errorMessage = action.payload as string;
+			}
+		);
 		builder.addCase(fetchTags.pending, (state) => {
 			state.tags.items = [];
 			state.tags.tagsStatus = "loading";
+			state.tags.errorMessage = "";
 		});
 		builder.addCase(
 			fetchTags.fulfilled,
 			(state, action: PayloadAction<string[]>) => {
 				state.tags.items = action.payload;
 				state.tags.tagsStatus = "loaded";
+				state.tags.errorMessage = "";
 			}
 		);
-		builder.addCase(fetchTags.rejected, (state) => {
-			state.tags.items = [];
-			state.tags.tagsStatus = "error";
-		});
+		builder.addCase(
+			fetchTags.rejected,
+			(state, action: PayloadAction<unknown>) => {
+				state.tags.items = [];
+				state.tags.tagsStatus = "error";
+				state.tags.errorMessage = action.payload as string;
+			}
+		);
 		builder.addCase(fetchRemovePost.pending, (state, action) => {
 			state.posts.items = state.posts.items.filter(
 				(post) => post._id !== (action.meta.arg as unknown as string)

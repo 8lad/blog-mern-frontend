@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 
+import { ErrorBlock } from "../components/ErrorBlock/ErrorBlock";
 import { Post } from "../components/Post";
 import { PostSkeleton } from "../components/Post/Skeleton";
 import { TagsBlock } from "../components/TagsBlock";
@@ -24,11 +25,18 @@ export const TagSortedPostsPage = () => {
 		tags.some((item) => item === tag)
 	);
 	const userData = useSelector((state: RootState) => state.auth.data);
+	const { errorMessage } = useSelector(
+		(state: RootState) => state.posts.posts
+	);
 
 	useEffect(() => {
 		dispatch(fetchPosts());
 		dispatch(fetchTags());
 	}, [dispatch]);
+
+	if (errorMessage) {
+		return <ErrorBlock title={errorMessage} />;
+	}
 
 	return (
 		<>
