@@ -11,6 +11,7 @@ import Typography from "@mui/material/Typography";
 
 import NoAvatar from "../assets/hacker.png";
 import { Index } from "../components/AddComment";
+import { selectIsAuth } from "../redux/slices/auth";
 import { fetchComments } from "../redux/slices/comments";
 import { RootState, useAppDispatch } from "../redux/store";
 
@@ -29,6 +30,8 @@ export const CommentsBlock: React.FC<CommentsBlockProps> = ({ postId }) => {
 	const currentComments = !postId
 		? comments
 		: comments.filter((comment) => comment.postId === postId);
+	const isAuth = useSelector(selectIsAuth);
+	const isShowAddCommentComponent = isAuth && postId;
 
 	useEffect(() => {
 		dispatch(fetchComments());
@@ -100,7 +103,7 @@ export const CommentsBlock: React.FC<CommentsBlockProps> = ({ postId }) => {
 					You don`t have any comments yet
 				</Typography>
 			)}
-			{postId && <Index postId={postId} />}
+			{isShowAddCommentComponent && <Index postId={postId} />}
 		</SideBlock>
 	);
 };

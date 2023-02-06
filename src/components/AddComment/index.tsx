@@ -17,8 +17,9 @@ interface IndexProps {
 export const Index: React.FC<IndexProps> = ({ postId }) => {
 	const [commentText, setCommentText] = useState<string>("");
 	const isAbleToSend: boolean = commentText.length < 3;
-	const enterTextHangler = (event: React.ChangeEvent<HTMLInputElement>) =>
+	const enterTextHangler = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setCommentText(event.target.value);
+	};
 	const dispatch = useAppDispatch();
 	const { fullName, avatarUrl } = useSelector(
 		(state: RootState) => state.auth.data

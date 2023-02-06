@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 
 import { CommentsBlock } from "../components/CommentsBlock";
+import { ErrorBlock } from "../components/ErrorBlock/ErrorBlock";
 import { Post } from "../components/Post";
 import { PostSkeleton } from "../components/Post/Skeleton";
 import { fetchSinglePost } from "../redux/slices/singlePost";
@@ -22,6 +23,9 @@ export const FullPost = () => {
 	const { comments } = useSelector((state: RootState) => state.comments);
 	const isLoading = singlePostStatus === "loading";
 	const hasError = singlePostStatus === "error";
+	const { errorMessage } = useSelector(
+		(state: RootState) => state.singlePost
+	);
 
 	useEffect(() => {
 		hasError && notify();
@@ -29,6 +33,10 @@ export const FullPost = () => {
 			dispatch(fetchSinglePost(id));
 		}
 	}, [id]);
+
+	if (errorMessage) {
+		return <ErrorBlock title={errorMessage} />;
+	}
 
 	if (isLoading) {
 		return <PostSkeleton />;

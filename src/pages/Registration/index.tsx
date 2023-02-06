@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
@@ -13,7 +14,7 @@ import {
 	selectIsAuth,
 	userSingInData,
 } from "../../redux/slices/auth";
-import { useAppDispatch } from "../../redux/store";
+import { RootState, useAppDispatch } from "../../redux/store";
 
 import styles from "./Login.module.scss";
 
@@ -31,16 +32,23 @@ export const Registration = () => {
 		mode: "onChange",
 	});
 
+	const { errorMessage } = useSelector((state: RootState) => state.auth);
+	const notify = (message: string) => toast(message);
+
 	const isAuth = useSelector(selectIsAuth);
 	const dispatch = useAppDispatch();
 
 	const onSubmit = async (values: userSingInData) => {
 		const data = await dispatch(fetchRegister(values));
 
-		if ("token" in data.payload) {
-			window.localStorage.setItem("token", data.payload.token);
+		if (typeof data.payload === "object" && "token" in data.payload) {
+			window.localStorage.setItem("token", data.payload.token as string);
 		}
 	};
+
+	useEffect(() => {
+		errorMessage && notify("Wrong authorization data");
+	}, [errorMessage]);
 
 	if (isAuth) {
 		return <Navigate to="/" />;
@@ -57,7 +65,7 @@ export const Registration = () => {
 			<form onSubmit={handleSubmit(onSubmit)}>
 				<TextField
 					className={styles.field}
-					label="Полное имя"
+					label="Full name"
 					helperText={errors.fullName?.message}
 					error={Boolean(errors.fullName?.message)}
 					{...register("fullName", {
@@ -77,6 +85,7 @@ export const Registration = () => {
 				/>
 				<TextField
 					className={styles.field}
+					type="password"
 					label="Password"
 					helperText={errors.passwordHash?.message}
 					error={Boolean(errors.passwordHash?.message)}
@@ -92,7 +101,7 @@ export const Registration = () => {
 					disabled={!isValid}
 					fullWidth
 				>
-					Зарегистрироваться
+					Sing in
 				</Button>
 			</form>
 		</Paper>

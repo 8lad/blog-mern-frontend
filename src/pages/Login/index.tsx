@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
@@ -13,7 +13,7 @@ import {
 	selectIsAuth,
 	userAuthInputData,
 } from "../../redux/slices/auth";
-import { useAppDispatch } from "../../redux/store";
+import { RootState, useAppDispatch } from "../../redux/store";
 
 import "react-toastify/dist/ReactToastify.css";
 import styles from "./Login.module.scss";
@@ -21,7 +21,8 @@ import styles from "./Login.module.scss";
 export const Login = () => {
 	const dispatch = useAppDispatch();
 	const isAuth = useSelector(selectIsAuth);
-	const notify = () => toast("Authorization error");
+	const { errorMessage } = useSelector((state: RootState) => state.auth);
+	const notify = (message: string) => toast(message);
 
 	const {
 		register,
@@ -38,13 +39,17 @@ export const Login = () => {
 	const onSubmit = async (values: userAuthInputData) => {
 		const data = await dispatch(fetchAuth(values));
 		if (!data.payload) {
-			notify();
+			notify("Incorrect password");
 		}
 
-		if ("token" in data.payload) {
-			window.localStorage.setItem("token", data.payload.token);
+		if (typeof data.payload === "object" && "token" in data.payload) {
+			window.localStorage.setItem("token", data.payload.token as string);
 		}
 	};
+
+	useEffect(() => {
+		errorMessage && notify("Wrong authorization data");
+	}, [errorMessage]);
 
 	if (isAuth) {
 		return <Navigate to="/" />;
@@ -54,7 +59,7 @@ export const Login = () => {
 		<>
 			<Paper classes={{ root: styles.root }}>
 				<Typography classes={{ root: styles.title }} variant="h5">
-					Вход в аккаунт
+					Login to account
 				</Typography>
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<TextField
@@ -70,7 +75,8 @@ export const Login = () => {
 					/>
 					<TextField
 						className={styles.field}
-						label="Пароль"
+						type="password"
+						label="Password"
 						error={Boolean(errors.passwordHash?.message)}
 						helperText={errors.passwordHash?.message}
 						{...register("passwordHash", {
@@ -85,7 +91,7 @@ export const Login = () => {
 						disabled={!isValid}
 						fullWidth
 					>
-						Войти
+						Log in
 					</Button>
 				</form>
 			</Paper>
