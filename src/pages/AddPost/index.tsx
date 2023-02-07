@@ -81,7 +81,7 @@ export const AddPost: React.FC = () => {
 				? tags
 				: (tags as string).replaceAll(",", " ").split(" "),
 			imageUrl,
-			_id: id ?? Date.now().toString(),
+			_id: id ?? "",
 		};
 
 		dispatch(fetchSinglePostData(fields));

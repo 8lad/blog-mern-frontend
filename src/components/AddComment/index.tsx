@@ -37,10 +37,14 @@ export const Index: React.FC<IndexProps> = ({ postId }) => {
 		setCommentText("");
 	};
 
+	const avatarImage = avatarUrl
+		? `${import.meta.env.VITE_API_URL}${avatarUrl}`
+		: NoAvatar;
+
 	return (
 		<>
 			<div className={styles.root}>
-				<Avatar classes={{ root: styles.avatar }} src={NoAvatar} />
+				<Avatar classes={{ root: styles.avatar }} src={avatarImage} />
 				<div className={styles.form}>
 					<TextField
 						label="Left a comment"

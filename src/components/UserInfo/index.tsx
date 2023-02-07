@@ -1,6 +1,6 @@
 import React from "react";
 
-import HackerAvatar from "../../assets/hacker.png";
+import NoAvatar from "../../assets/hacker.png";
 import { formatDate } from "../../utils/formatDate";
 
 import styles from "./UserInfo.module.scss";
@@ -20,11 +20,15 @@ export const UserInfo: React.FC<UserInfoProps> = ({
 		? formatDate(additionalText)
 		: "No data";
 
+	const avatarImage = avatarUrl
+		? `${import.meta.env.VITE_API_URL}${avatarUrl}`
+		: NoAvatar;
+
 	return (
 		<div className={styles.root}>
 			<img
 				className={styles.avatar}
-				src={avatarUrl ? avatarUrl : HackerAvatar}
+				src={avatarImage}
 				alt={
 					avatarUrl
 						? fullName
@@ -32,7 +36,7 @@ export const UserInfo: React.FC<UserInfoProps> = ({
 				}
 				onError={(
 					event: React.SyntheticEvent<HTMLImageElement, Event>
-				) => ((event.target as HTMLImageElement).src = HackerAvatar)}
+				) => ((event.target as HTMLImageElement).src = NoAvatar)}
 			/>
 			<div className={styles.userDetails}>
 				<span className={styles.userName}>{fullName}</span>

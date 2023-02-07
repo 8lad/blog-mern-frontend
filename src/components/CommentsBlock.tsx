@@ -32,6 +32,11 @@ export const CommentsBlock: React.FC<CommentsBlockProps> = ({ postId }) => {
 		: comments.filter((comment) => comment.postId === postId);
 	const isAuth = useSelector(selectIsAuth);
 	const isShowAddCommentComponent = isAuth && postId;
+	const setAvatarImage = (imageUrl: string): string => {
+		return imageUrl
+			? `${import.meta.env.VITE_API_URL}${imageUrl}`
+			: NoAvatar;
+	};
 
 	useEffect(() => {
 		dispatch(fetchComments());
@@ -55,10 +60,9 @@ export const CommentsBlock: React.FC<CommentsBlockProps> = ({ postId }) => {
 										) : (
 											<Avatar
 												alt={obj.user.fullName}
-												src={
-													obj.user.avatarUrl ??
-													NoAvatar
-												}
+												src={setAvatarImage(
+													obj.user.avatarUrl
+												)}
 											/>
 										)}
 									</ListItemAvatar>

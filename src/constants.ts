@@ -11,3 +11,4 @@ export const APP_ROUTE_TAGS: AppPathType = "/tags";
 export const APP_ROUTE_AUTH: AppPathType = "/auth";
 export const APP_ROUTE_ME: AppPathType = "/me";
 export const APP_ROUTE_COMMENTS: AppPathType = "/comments";
+export const APP_ROUTE_UPLOAD_AVATAR: AppPathType = "/uploadAvatar";

@@ -6,6 +6,7 @@ import {
 	APP_ROUTE_LOGIN,
 	APP_ROUTE_ME,
 	APP_ROUTE_REGISTER,
+	APP_ROUTE_UPLOAD_AVATAR,
 } from "../../constants";
 import { requestStatuses, userDataInterface } from "../reduxTypes";
 import { RootState } from "../store";
@@ -19,6 +20,7 @@ interface InitialState {
 export interface userAuthInputData {
 	email: string;
 	passwordHash: string;
+	avatarUrl?: string;
 }
 
 export interface userSingInData extends userAuthInputData {
@@ -52,6 +54,19 @@ export const fetchAuth = createAsyncThunk<
 	}
 });
 
+export const fetchAvatarUrl = createAsyncThunk<
+	string,
+	FormData,
+	{ rejectValue: string }
+>("auth/fetchAvatarUrl", async (formData, thunkApi) => {
+	try {
+		const { data } = await axios.post(APP_ROUTE_UPLOAD_AVATAR, formData);
+		return data.url;
+	} catch (error) {
+		return thunkApi.rejectWithValue((error as Error).message);
+	}
+});
+
 export const fetchAuthMe = createAsyncThunk("auth/fetchAuthMe", async () => {
 	const { data } = await axios.get(`${APP_ROUTE_AUTH}${APP_ROUTE_ME}`);
 	return data;
@@ -79,6 +94,9 @@ const authSlice = createSlice({
 	reducers: {
 		logout: (state) => {
 			state.data = initialState.data;
+		},
+		removeAvatarImage: (state) => {
+			state.data.avatarUrl = "";
 		},
 	},
 	extraReducers: (builder) => {
@@ -144,6 +162,24 @@ const authSlice = createSlice({
 				state.errorMessage = action.payload as string;
 			}
 		);
+		builder.addCase(fetchAvatarUrl.pending, (state) => {
+			state.authStatus = "loading";
+			state.data.avatarUrl = "";
+		});
+		builder.addCase(
+			fetchAvatarUrl.fulfilled,
+			(state, action: PayloadAction<string>) => {
+				state.authStatus = "loaded";
+				state.data.avatarUrl = action.payload;
+			}
+		);
+		builder.addCase(
+			fetchAvatarUrl.rejected,
+			(state, action: PayloadAction<unknown>) => {
+				state.authStatus = "error";
+				state.errorMessage = action.payload as string;
+			}
+		);
 	},
 });
 
@@ -153,4 +189,4 @@ export const selectIsAuth = (state: RootState) =>
 	Boolean(state.auth.data.email);
 
 export const authReducer = authSlice.reducer;
-export const { logout } = authSlice.actions;
+export const { logout, removeAvatarImage } = authSlice.actions;
