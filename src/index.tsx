@@ -11,17 +11,21 @@ import { theme } from "./theme";
 
 import "./index.scss";
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const mainContainer = document.querySelector("#root");
 
-root.render(
-	<>
-		<CssBaseline />
-		<ThemeProvider theme={theme}>
-			<BrowserRouter>
-				<Provider store={store}>
-					<App />
-				</Provider>
-			</BrowserRouter>
-		</ThemeProvider>
-	</>
-);
+if (mainContainer) {
+	const root = ReactDOM.createRoot(mainContainer);
+
+	root.render(
+		<>
+			<CssBaseline />
+			<ThemeProvider theme={theme}>
+				<BrowserRouter>
+					<Provider store={store}>
+						<App />
+					</Provider>
+				</BrowserRouter>
+			</ThemeProvider>
+		</>
+	);
+}
