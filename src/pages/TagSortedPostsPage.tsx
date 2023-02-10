@@ -8,6 +8,7 @@ import { ErrorBlock } from "../components/ErrorBlock/ErrorBlock";
 import { Post } from "../components/Post";
 import { PostSkeleton } from "../components/Post/Skeleton";
 import { TagsBlock } from "../components/TagsBlock";
+import { useScreenSize } from "../hooks/useScreenSize";
 import { fetchPosts } from "../redux/slices/posts";
 import { fetchTags } from "../redux/slices/posts";
 import { RootState, useAppDispatch } from "../redux/store";
@@ -28,6 +29,8 @@ export const TagSortedPostsPage = () => {
 	const { errorMessage } = useSelector(
 		(state: RootState) => state.posts.posts
 	);
+	const { screenWidth } = useScreenSize();
+	const isShowAdditionalInfo = screenWidth && screenWidth >= 900;
 
 	useEffect(() => {
 		dispatch(fetchPosts());
@@ -50,7 +53,7 @@ export const TagSortedPostsPage = () => {
 				#{currentPageTag}
 			</Typography>
 			<Grid container spacing={4}>
-				<Grid xs={8} item>
+				<Grid xs={12} md={8} item>
 					{(isPostsLoading ? [...Array(5)] : currentTagPosts).map(
 						(obj, index) =>
 							isPostsLoading ? (
@@ -77,9 +80,14 @@ export const TagSortedPostsPage = () => {
 							)
 					)}
 				</Grid>
-				<Grid xs={4} item>
-					<TagsBlock items={tags.items} isLoading={isTagsLoading} />
-				</Grid>
+				{isShowAdditionalInfo && (
+					<Grid xs={4} item>
+						<TagsBlock
+							items={tags.items}
+							isLoading={isTagsLoading}
+						/>
+					</Grid>
+				)}
 			</Grid>
 		</>
 	);

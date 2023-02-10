@@ -5,9 +5,11 @@ import Grid from "@mui/material/Grid";
 import { CommentsBlock } from "../components/CommentsBlock";
 import { CustomTabs } from "../components/CustomTabs/CustomTabs";
 import { ErrorBlock } from "../components/ErrorBlock/ErrorBlock";
+import { ExtraInfo } from "../components/ExtraInfo/ExtraInfo";
 import { Post } from "../components/Post";
 import { PostSkeleton } from "../components/Post/Skeleton";
 import { TagsBlock } from "../components/TagsBlock";
+import { useScreenSize } from "../hooks/useScreenSize";
 import { fetchComments } from "../redux/slices/comments";
 import { fetchPosts, fetchTags } from "../redux/slices/posts";
 import { RootState, useAppDispatch } from "../redux/store";
@@ -24,6 +26,8 @@ export const Home = () => {
 	const { errorMessage } = useSelector(
 		(state: RootState) => state.posts.posts
 	);
+	const { screenWidth } = useScreenSize();
+	const isBigScreen = screenWidth && screenWidth >= 900;
 
 	useEffect(() => {
 		dispatch(fetchPosts(sorting));
@@ -38,8 +42,19 @@ export const Home = () => {
 	return (
 		<>
 			<CustomTabs />
+			{!isBigScreen && (
+				<ExtraInfo
+					tags={
+						<TagsBlock
+							items={tags.items}
+							isLoading={isTagsLoading}
+						/>
+					}
+					comments={<CommentsBlock />}
+				/>
+			)}
 			<Grid container spacing={4}>
-				<Grid xs={8} item>
+				<Grid xs={12} md={8} item>
 					{(isPostsLoading ? [...Array(5)] : posts.items).map(
 						(obj, index) =>
 							isPostsLoading ? (
@@ -66,10 +81,15 @@ export const Home = () => {
 							)
 					)}
 				</Grid>
-				<Grid xs={4} item>
-					<TagsBlock items={tags.items} isLoading={isTagsLoading} />
-					<CommentsBlock />
-				</Grid>
+				{isBigScreen && (
+					<Grid xs={4} item>
+						<TagsBlock
+							items={tags.items}
+							isLoading={isTagsLoading}
+						/>
+						<CommentsBlock />
+					</Grid>
+				)}
 			</Grid>
 		</>
 	);
