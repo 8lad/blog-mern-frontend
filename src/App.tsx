@@ -2,9 +2,15 @@ import React, { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import Container from "@mui/material/Container";
 
+import { Header } from "./components/Header/Header";
+import { AddPost } from "./pages/AddPost/AddPost";
+import { FullPost } from "./pages/FullPost";
+import { Home } from "./pages/Home";
+import { Login } from "./pages/Login/Login";
+import { Registration } from "./pages/Registration/Registration";
+import { TagSortedPostsPage } from "./pages/TagSortedPostsPage";
 import { fetchAuthMe } from "./redux/slices/auth";
 import { useAppDispatch } from "./redux/store";
-import { Header } from "./components";
 import {
 	APP_ROUTE_ADD_POST,
 	APP_ROUTE_EDIT_POST,
@@ -14,16 +20,8 @@ import {
 	APP_ROUTE_ROOT,
 	APP_ROUTE_TAGS,
 } from "./constants";
-import {
-	AddPost,
-	FullPost,
-	Home,
-	Login,
-	Registration,
-	TagSortedPostsPage,
-} from "./pages";
 
-function App() {
+export const App = () => {
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
@@ -58,6 +56,4 @@ function App() {
 			</Container>
 		</>
 	);
-}
-
-export default App;
+};

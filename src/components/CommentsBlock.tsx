@@ -10,12 +10,12 @@ import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 
 import NoAvatar from "../assets/hacker.png";
-import { Index } from "../components/AddComment";
 import { selectIsAuth } from "../redux/slices/auth";
 import { fetchComments } from "../redux/slices/comments";
 import { RootState, useAppDispatch } from "../redux/store";
 
-import { SideBlock } from "./SideBlock";
+import { AddComment } from "./AddComment/AddComment";
+import { SideBlock } from "./SideBlock/SideBlock";
 
 interface CommentsBlockProps {
 	postId?: string;
@@ -107,7 +107,7 @@ export const CommentsBlock: React.FC<CommentsBlockProps> = ({ postId }) => {
 					You don`t have any comments yet
 				</Typography>
 			)}
-			{isShowAddCommentComponent && <Index postId={postId} />}
+			{isShowAddCommentComponent && <AddComment postId={postId} />}
 		</SideBlock>
 	);
 };

@@ -10,11 +10,11 @@ import { RootState, useAppDispatch } from "../../redux/store";
 
 import styles from "./AddComment.module.scss";
 
-interface IndexProps {
+interface AddCommentProps {
 	postId: string;
 }
 
-export const Index: React.FC<IndexProps> = ({ postId }) => {
+export const AddComment: React.FC<AddCommentProps> = ({ postId }) => {
 	const [commentText, setCommentText] = useState<string>("");
 	const isAbleToSend: boolean = commentText.length < 3;
 	const enterTextHangler = (event: React.ChangeEvent<HTMLInputElement>) => {

@@ -10,7 +10,7 @@ import Skeleton from "@mui/material/Skeleton";
 
 import { APP_ROUTE_TAGS } from "../constants";
 
-import { SideBlock } from "./SideBlock";
+import { SideBlock } from "./SideBlock/SideBlock";
 
 interface TagsBlockProps {
 	items: string[];

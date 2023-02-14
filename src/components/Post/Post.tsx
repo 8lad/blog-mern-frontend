@@ -17,7 +17,7 @@ import { userDataInterface } from "../../redux/reduxTypes";
 import { fetchRemovePost } from "../../redux/slices/posts";
 import { useAppDispatch } from "../../redux/store";
 import { ConfirmationPopup } from "../ConfirmationPopup/ConfirmationPopup";
-import { UserInfo } from "../UserInfo";
+import { UserInfo } from "../UserInfo/UserInfo";
 
 import { PostSkeleton } from "./Skeleton";
 

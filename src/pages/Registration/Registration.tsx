@@ -18,7 +18,7 @@ import {
 } from "../../redux/slices/auth";
 import { RootState, useAppDispatch } from "../../redux/store";
 
-import styles from "./Login.module.scss";
+import styles from "./Registration.module.scss";
 
 export const Registration = () => {
 	const {

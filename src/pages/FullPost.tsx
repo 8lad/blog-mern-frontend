@@ -6,7 +6,7 @@ import { toast, ToastContainer } from "react-toastify";
 
 import { CommentsBlock } from "../components/CommentsBlock";
 import { ErrorBlock } from "../components/ErrorBlock/ErrorBlock";
-import { Post } from "../components/Post";
+import { Post } from "../components/Post/Post";
 import { PostSkeleton } from "../components/Post/Skeleton";
 import { fetchSinglePost } from "../redux/slices/singlePost";
 import { RootState, useAppDispatch } from "../redux/store";

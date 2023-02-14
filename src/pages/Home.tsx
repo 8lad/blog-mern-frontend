@@ -6,7 +6,7 @@ import { CommentsBlock } from "../components/CommentsBlock";
 import { CustomTabs } from "../components/CustomTabs/CustomTabs";
 import { ErrorBlock } from "../components/ErrorBlock/ErrorBlock";
 import { ExtraInfo } from "../components/ExtraInfo/ExtraInfo";
-import { Post } from "../components/Post";
+import { Post } from "../components/Post/Post";
 import { PostSkeleton } from "../components/Post/Skeleton";
 import { TagsBlock } from "../components/TagsBlock";
 import { useScreenSize } from "../hooks/useScreenSize";
@@ -56,7 +56,7 @@ export const Home = () => {
 			<Grid container spacing={4}>
 				<Grid xs={12} md={8} item>
 					{(isPostsLoading ? [...Array(5)] : posts.items).map(
-						(obj, index) =>
+						(obj, index: number) =>
 							isPostsLoading ? (
 								<PostSkeleton key={index} />
 							) : (

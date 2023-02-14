@@ -5,7 +5,7 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 
 import { ErrorBlock } from "../components/ErrorBlock/ErrorBlock";
-import { Post } from "../components/Post";
+import { Post } from "../components/Post/Post";
 import { PostSkeleton } from "../components/Post/Skeleton";
 import { TagsBlock } from "../components/TagsBlock";
 import { useScreenSize } from "../hooks/useScreenSize";
