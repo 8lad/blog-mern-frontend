@@ -7,7 +7,7 @@ import {
 	APP_ROUTE_ME,
 	APP_ROUTE_REGISTER,
 	APP_ROUTE_UPLOAD_AVATAR,
-} from "../../constants";
+} from "../../constants/routes";
 import { RequestStatuses, UserDataInterface } from "../reduxTypes";
 import { RootState } from "../store";
 

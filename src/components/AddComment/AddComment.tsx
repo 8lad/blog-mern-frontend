@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
 import NoAvatar from "../../assets/hacker.png";
+import { MIN_COMMENT_LENGTH } from "../../constants/baseValues";
 import { fetchSingleCommentData } from "../../redux/slices/comments";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 
@@ -15,7 +16,7 @@ interface AddCommentProps {
 
 export const AddComment: React.FC<AddCommentProps> = ({ postId }) => {
 	const [commentText, setCommentText] = useState<string>("");
-	const isAbleToSend: boolean = commentText.length < 3;
+	const isAbleToSend: boolean = commentText.length < MIN_COMMENT_LENGTH;
 	const enterTextHangler = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setCommentText(event.target.value);
 	};

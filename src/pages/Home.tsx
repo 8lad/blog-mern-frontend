@@ -8,6 +8,7 @@ import { ExtraInfo } from "../components/ExtraInfo/ExtraInfo";
 import { Post } from "../components/Post/Post";
 import { PostSkeleton } from "../components/Post/Skeleton";
 import { TagsBlock } from "../components/TagsBlock";
+import { MIDDLE_SCREEN_SIZE } from "../constants/baseValues";
 import { useScreenSize } from "../hooks/useScreenSize";
 import { fetchComments } from "../redux/slices/comments";
 import { fetchPosts, fetchTags } from "../redux/slices/posts";
@@ -24,7 +25,7 @@ export const Home = () => {
 	const isTagsLoading = tags.tagsStatus === "loading";
 	const { errorMessage } = useAppSelector((state) => state.posts.posts);
 	const { screenWidth } = useScreenSize();
-	const isBigScreen = screenWidth && screenWidth >= 900;
+	const isBigScreen = screenWidth && screenWidth >= MIDDLE_SCREEN_SIZE;
 
 	useEffect(() => {
 		dispatch(fetchPosts(sorting));

@@ -7,6 +7,7 @@ import { ErrorBlock } from "../components/ErrorBlock/ErrorBlock";
 import { Post } from "../components/Post/Post";
 import { PostSkeleton } from "../components/Post/Skeleton";
 import { TagsBlock } from "../components/TagsBlock";
+import { MIDDLE_SCREEN_SIZE } from "../constants/baseValues";
 import { useScreenSize } from "../hooks/useScreenSize";
 import { fetchPosts } from "../redux/slices/posts";
 import { fetchTags } from "../redux/slices/posts";
@@ -27,7 +28,8 @@ export const TagSortedPostsPage = () => {
 	const userData = useAppSelector((state) => state.auth.data);
 	const { errorMessage } = useAppSelector((state) => state.posts.posts);
 	const { screenWidth } = useScreenSize();
-	const isShowAdditionalInfo = screenWidth && screenWidth >= 900;
+	const isShowAdditionalInfo =
+		screenWidth && screenWidth >= MIDDLE_SCREEN_SIZE;
 
 	useEffect(() => {
 		dispatch(fetchPosts());

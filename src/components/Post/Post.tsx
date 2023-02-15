@@ -12,7 +12,7 @@ import {
 	APP_ROUTE_EDIT_POST,
 	APP_ROUTE_POSTS,
 	APP_ROUTE_TAGS,
-} from "../../constants";
+} from "../../constants/routes";
 import { UserDataInterface } from "../../redux/reduxTypes";
 import { fetchRemovePost } from "../../redux/slices/posts";
 import { useAppDispatch } from "../../redux/store";

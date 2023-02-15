@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import axios from "../../axios";
-import { APP_ROUTE_POSTS, APP_ROUTE_UPLOAD } from "../../constants";
+import { APP_ROUTE_POSTS, APP_ROUTE_UPLOAD } from "../../constants/routes";
 import { BaseSinglePost, RequestStatuses, SinglePost } from "../reduxTypes";
 import { RootState } from "../store";
 

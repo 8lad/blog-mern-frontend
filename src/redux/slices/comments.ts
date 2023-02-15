@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import axios from "../../axios";
-import { APP_ROUTE_COMMENTS } from "../../constants";
+import { APP_ROUTE_COMMENTS } from "../../constants/routes";
 import { CommentData, RequestStatuses } from "../reduxTypes";
 
 interface InitialState {

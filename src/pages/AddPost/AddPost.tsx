@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 
-import { APP_ROUTE_POSTS, APP_ROUTE_ROOT } from "../../constants";
+import { APP_ROUTE_POSTS, APP_ROUTE_ROOT } from "../../constants/routes";
 import { selectIsAuth } from "../../redux/slices/auth";
 import {
 	fetchImageUrl,

@@ -8,7 +8,7 @@ import {
 	APP_ROUTE_LOGIN,
 	APP_ROUTE_REGISTER,
 	APP_ROUTE_ROOT,
-} from "../../constants";
+} from "../../constants/routes";
 import { logout, selectIsAuth } from "../../redux/slices/auth";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 
