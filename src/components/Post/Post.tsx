@@ -13,7 +13,7 @@ import {
 	APP_ROUTE_POSTS,
 	APP_ROUTE_TAGS,
 } from "../../constants";
-import { userDataInterface } from "../../redux/reduxTypes";
+import { UserDataInterface } from "../../redux/reduxTypes";
 import { fetchRemovePost } from "../../redux/slices/posts";
 import { useAppDispatch } from "../../redux/store";
 import { ConfirmationPopup } from "../ConfirmationPopup/ConfirmationPopup";
@@ -27,7 +27,7 @@ interface PostProps {
 	id: string;
 	title: string;
 	imageUrl: string;
-	user: userDataInterface;
+	user: UserDataInterface;
 	viewsCount: number;
 	commentsCount: number;
 	tags: string[];

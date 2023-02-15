@@ -2,11 +2,11 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import axios from "../../axios";
 import { APP_ROUTE_COMMENTS } from "../../constants";
-import { commentData, requestStatuses } from "../reduxTypes";
+import { CommentData, RequestStatuses } from "../reduxTypes";
 
 interface InitialState {
-	comments: commentData[];
-	commentsStatus: requestStatuses;
+	comments: CommentData[];
+	commentsStatus: RequestStatuses;
 	errorMessage: string;
 }
 
@@ -17,7 +17,7 @@ const initialState: InitialState = {
 };
 
 export const fetchComments = createAsyncThunk<
-	commentData[],
+	CommentData[],
 	void,
 	{ rejectValue: string }
 >("comments/fetchComments", async (_, thunkApi) => {
@@ -30,12 +30,12 @@ export const fetchComments = createAsyncThunk<
 });
 
 export const fetchSingleCommentData = createAsyncThunk<
-	commentData[],
-	commentData,
+	CommentData[],
+	CommentData,
 	{ rejectValue: string }
->("comments/fetchSingleCommentData", async (commentData, thunkApi) => {
+>("comments/fetchSingleCommentData", async (CommentData, thunkApi) => {
 	try {
-		const { data } = await axios.post(APP_ROUTE_COMMENTS, commentData);
+		const { data } = await axios.post(APP_ROUTE_COMMENTS, CommentData);
 		return data;
 	} catch (error) {
 		return thunkApi.rejectWithValue((error as Error).message);
@@ -54,7 +54,7 @@ const commentsSlice = createSlice({
 		});
 		builder.addCase(
 			fetchComments.fulfilled,
-			(state, action: PayloadAction<commentData[]>) => {
+			(state, action: PayloadAction<CommentData[]>) => {
 				state.comments = action.payload;
 				state.commentsStatus = "loaded";
 				state.errorMessage = "";
@@ -75,7 +75,7 @@ const commentsSlice = createSlice({
 		});
 		builder.addCase(
 			fetchSingleCommentData.fulfilled,
-			(state, action: PayloadAction<commentData[]>) => {
+			(state, action: PayloadAction<CommentData[]>) => {
 				state.comments = action.payload;
 				state.commentsStatus = "loaded";
 				state.errorMessage = "";

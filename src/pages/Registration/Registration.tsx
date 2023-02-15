@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Avatar from "@mui/material/Avatar";
@@ -16,7 +15,7 @@ import {
 	selectIsAuth,
 	userSingInData,
 } from "../../redux/slices/auth";
-import { RootState, useAppDispatch } from "../../redux/store";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
 
 import styles from "./Registration.module.scss";
 
@@ -37,10 +36,10 @@ export const Registration = () => {
 	const {
 		errorMessage,
 		data: { avatarUrl },
-	} = useSelector((state: RootState) => state.auth);
+	} = useAppSelector((state) => state.auth);
 	const notify = (message: string) => toast(message);
 
-	const isAuth = useSelector(selectIsAuth);
+	const isAuth = useAppSelector(selectIsAuth);
 	const dispatch = useAppDispatch();
 	const inputFileRef = useRef<null | HTMLInputElement>(null);
 

@@ -8,12 +8,12 @@ import {
 	APP_ROUTE_REGISTER,
 	APP_ROUTE_UPLOAD_AVATAR,
 } from "../../constants";
-import { requestStatuses, userDataInterface } from "../reduxTypes";
+import { RequestStatuses, UserDataInterface } from "../reduxTypes";
 import { RootState } from "../store";
 
 interface InitialState {
-	data: userDataInterface;
-	authStatus: requestStatuses;
+	data: UserDataInterface;
+	authStatus: RequestStatuses;
 	errorMessage?: string;
 }
 
@@ -39,7 +39,7 @@ const initialState: InitialState = {
 };
 
 export const fetchAuth = createAsyncThunk<
-	userDataInterface,
+	UserDataInterface,
 	userAuthInputData,
 	{ rejectValue: string }
 >("auth/fetchAuth", async (params, thunkApi) => {
@@ -73,7 +73,7 @@ export const fetchAuthMe = createAsyncThunk("auth/fetchAuthMe", async () => {
 });
 
 export const fetchRegister = createAsyncThunk<
-	userDataInterface,
+	UserDataInterface,
 	userSingInData,
 	{ rejectValue: string }
 >("auth/fetchRegister", async (params, thunkApi) => {
@@ -107,7 +107,7 @@ const authSlice = createSlice({
 		});
 		builder.addCase(
 			fetchAuth.fulfilled,
-			(state, action: PayloadAction<userDataInterface>) => {
+			(state, action: PayloadAction<UserDataInterface>) => {
 				state.data = action.payload;
 				state.authStatus = "loaded";
 				state.errorMessage = "";
@@ -128,7 +128,7 @@ const authSlice = createSlice({
 		});
 		builder.addCase(
 			fetchAuthMe.fulfilled,
-			(state, action: PayloadAction<userDataInterface>) => {
+			(state, action: PayloadAction<UserDataInterface>) => {
 				state.data = action.payload;
 				state.authStatus = "loaded";
 				state.errorMessage = "";
@@ -148,7 +148,7 @@ const authSlice = createSlice({
 		});
 		builder.addCase(
 			fetchRegister.fulfilled,
-			(state, action: PayloadAction<userDataInterface>) => {
+			(state, action: PayloadAction<UserDataInterface>) => {
 				state.data = action.payload;
 				state.authStatus = "loaded";
 				state.errorMessage = "";

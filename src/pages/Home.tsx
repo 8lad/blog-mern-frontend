@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
 import Grid from "@mui/material/Grid";
 
 import { CommentsBlock } from "../components/CommentsBlock";
@@ -12,20 +11,18 @@ import { TagsBlock } from "../components/TagsBlock";
 import { useScreenSize } from "../hooks/useScreenSize";
 import { fetchComments } from "../redux/slices/comments";
 import { fetchPosts, fetchTags } from "../redux/slices/posts";
-import { RootState, useAppDispatch } from "../redux/store";
+import { useAppDispatch, useAppSelector } from "../redux/store";
 import { getImageUrl } from "../utils/getImageUrl";
 
 export const Home = () => {
 	const dispatch = useAppDispatch();
-	const { posts, tags } = useSelector((state: RootState) => state.posts);
-	const userData = useSelector((state: RootState) => state.auth.data);
-	const { comments } = useSelector((state: RootState) => state.comments);
+	const { posts, tags } = useAppSelector((state) => state.posts);
+	const userData = useAppSelector((state) => state.auth.data);
+	const { comments } = useAppSelector((state) => state.comments);
 	const { sorting } = posts;
 	const isPostsLoading = posts.postsStatus === "loading";
 	const isTagsLoading = tags.tagsStatus === "loading";
-	const { errorMessage } = useSelector(
-		(state: RootState) => state.posts.posts
-	);
+	const { errorMessage } = useAppSelector((state) => state.posts.posts);
 	const { screenWidth } = useScreenSize();
 	const isBigScreen = screenWidth && screenWidth >= 900;
 

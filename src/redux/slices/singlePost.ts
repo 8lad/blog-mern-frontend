@@ -2,12 +2,12 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import axios from "../../axios";
 import { APP_ROUTE_POSTS, APP_ROUTE_UPLOAD } from "../../constants";
-import { baseSinglePost, requestStatuses, singlePost } from "../reduxTypes";
+import { BaseSinglePost, RequestStatuses, SinglePost } from "../reduxTypes";
 import { RootState } from "../store";
 
 interface InitialState {
-	singlePostStatus: requestStatuses;
-	post: singlePost;
+	singlePostStatus: RequestStatuses;
+	post: SinglePost;
 	errorMessage: string;
 }
 
@@ -34,7 +34,7 @@ const initialState: InitialState = {
 };
 
 export const fetchSinglePost = createAsyncThunk<
-	singlePost,
+	SinglePost,
 	string,
 	{ rejectValue: string }
 >("singlePost/fetchSinglePost", async (id, thunkApi) => {
@@ -48,7 +48,7 @@ export const fetchSinglePost = createAsyncThunk<
 
 export const fetchSinglePostData = createAsyncThunk<
 	void,
-	baseSinglePost,
+	BaseSinglePost,
 	{ rejectValue: string }
 >("singlePost/fetchSinglePostData", async (postData, thunkApi) => {
 	try {
@@ -107,7 +107,7 @@ const singlePost = createSlice({
 		});
 		builder.addCase(
 			fetchSinglePost.fulfilled,
-			(state, action: PayloadAction<singlePost>) => {
+			(state, action: PayloadAction<SinglePost>) => {
 				state.post = action.payload;
 				state.singlePostStatus = "loaded";
 				state.errorMessage = "";

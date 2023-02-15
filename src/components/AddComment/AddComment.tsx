@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
 import NoAvatar from "../../assets/hacker.png";
 import { fetchSingleCommentData } from "../../redux/slices/comments";
-import { RootState, useAppDispatch } from "../../redux/store";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
 
 import styles from "./AddComment.module.scss";
 
@@ -21,9 +20,7 @@ export const AddComment: React.FC<AddCommentProps> = ({ postId }) => {
 		setCommentText(event.target.value);
 	};
 	const dispatch = useAppDispatch();
-	const { fullName, avatarUrl } = useSelector(
-		(state: RootState) => state.auth.data
-	);
+	const { fullName, avatarUrl } = useAppSelector((state) => state.auth.data);
 	const sendCommentData = () => {
 		const data = {
 			postId,

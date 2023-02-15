@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import Button from "@mui/material/Button";
@@ -13,15 +12,15 @@ import {
 	selectIsAuth,
 	userAuthInputData,
 } from "../../redux/slices/auth";
-import { RootState, useAppDispatch } from "../../redux/store";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
 
 import "react-toastify/dist/ReactToastify.css";
 import styles from "./Login.module.scss";
 
 export const Login = () => {
 	const dispatch = useAppDispatch();
-	const isAuth = useSelector(selectIsAuth);
-	const { errorMessage } = useSelector((state: RootState) => state.auth);
+	const isAuth = useAppSelector(selectIsAuth);
+	const { errorMessage } = useAppSelector((state) => state.auth);
 	const notify = (message: string) => toast(message);
 
 	const {
