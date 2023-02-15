@@ -1,16 +1,16 @@
-$blue: #4361ee;
+@import "src/style/variables";
 
 .root {
-	background-color: #fff;
-	border: 1px solid #dedede;
+	background-color: $main-white;
+	border: 1px solid $post-border-color;
 	border-radius: 6px;
 	overflow: hidden;
 	margin-bottom: 15px;
 	position: relative;
 
 	&:hover {
-		border: 1px solid $blue;
-		box-shadow: 0 0 0 1px $blue;
+		border: 1px solid $post-accent-color;
+		box-shadow: 0 0 0 1px $post-accent-color;
 
 		.editButtons {
 			opacity: 1;
@@ -19,8 +19,8 @@ $blue: #4361ee;
 
 	&Full {
 		&:hover {
-			background-color: #fff;
-			border: 1px solid #dedede;
+			background-color: $main-white;
+			border: 1px solid $post-accent-color;
 			box-shadow: none;
 		}
 	}
@@ -69,7 +69,7 @@ $blue: #4361ee;
 		color: #000;
 
 		&:hover {
-			color: $blue;
+			color: $post-accent-color;
 		}
 	}
 
@@ -99,7 +99,7 @@ $blue: #4361ee;
 
 		a {
 			text-decoration: none;
-			color: #000;
+			color: $main-black;
 		}
 	}
 }
@@ -124,8 +124,8 @@ $blue: #4361ee;
 }
 
 .skeleton {
-	background-color: #fff;
-	border: 1px solid #dedede;
+	background-color: $main-white;
+	border: 1px solid $post-border-color;
 	border-radius: 6px;
 	overflow: hidden;
 	margin-bottom: 15px;
@@ -160,7 +160,7 @@ $blue: #4361ee;
 	position: absolute;
 	right: 15px;
 	top: 15px;
-	background-color: rgba(255, 255, 255, 1);
+	background-color: $post-edit-button-backgroound;
 	border-radius: 10px;
 	opacity: 0;
 	transition: all 0.15s ease-in-out;
