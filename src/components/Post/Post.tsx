@@ -12,12 +12,12 @@ import {
 	APP_ROUTE_EDIT_POST,
 	APP_ROUTE_POSTS,
 	APP_ROUTE_TAGS,
-} from "../../constants";
-import { userDataInterface } from "../../redux/reduxTypes";
+} from "../../constants/routes";
+import { UserDataInterface } from "../../redux/reduxTypes";
 import { fetchRemovePost } from "../../redux/slices/posts";
 import { useAppDispatch } from "../../redux/store";
 import { ConfirmationPopup } from "../ConfirmationPopup/ConfirmationPopup";
-import { UserInfo } from "../UserInfo";
+import { UserInfo } from "../UserInfo/UserInfo";
 
 import { PostSkeleton } from "./Skeleton";
 
@@ -27,7 +27,7 @@ interface PostProps {
 	id: string;
 	title: string;
 	imageUrl: string;
-	user: userDataInterface;
+	user: UserDataInterface;
 	viewsCount: number;
 	commentsCount: number;
 	tags: string[];

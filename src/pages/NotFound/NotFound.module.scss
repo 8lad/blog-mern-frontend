@@ -1,0 +1,23 @@
+@import "src/styles/variables";
+
+.root {
+	width: 100%;
+	img {
+		max-width: 800px;
+		width: 100%;
+		margin: 0 auto;
+		display: block;
+		margin-bottom: 50px;
+	}
+}
+.link {
+	display: block;
+	margin: 0 auto;
+	color: $main-black;
+	width: fit-content;
+	font-size: 2em;
+	text-decoration: none;
+	&:hover {
+		text-decoration: underline;
+	}
+}

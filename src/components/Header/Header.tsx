@@ -1,5 +1,4 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
@@ -9,14 +8,14 @@ import {
 	APP_ROUTE_LOGIN,
 	APP_ROUTE_REGISTER,
 	APP_ROUTE_ROOT,
-} from "../../constants";
+} from "../../constants/routes";
 import { logout, selectIsAuth } from "../../redux/slices/auth";
-import { useAppDispatch } from "../../redux/store";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
 
 import styles from "./Header.module.scss";
 
 export const Header: React.FC = () => {
-	const isAuth = useSelector(selectIsAuth);
+	const isAuth = useAppSelector(selectIsAuth);
 	const dispatch = useAppDispatch();
 
 	const onClickLogout = () => {

@@ -1,12 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
-import { useSelector } from "react-redux";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import SimpleMDE from "react-simplemde-editor";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 
-import { APP_ROUTE_POSTS, APP_ROUTE_ROOT } from "../../constants";
+import { APP_ROUTE_POSTS, APP_ROUTE_ROOT } from "../../constants/routes";
 import { selectIsAuth } from "../../redux/slices/auth";
 import {
 	fetchImageUrl,
@@ -19,7 +18,7 @@ import {
 	setText,
 	setTitle,
 } from "../../redux/slices/singlePost";
-import { RootState, useAppDispatch } from "../../redux/store";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
 
 import "easymde/dist/easymde.min.css";
 import styles from "./AddPost.module.scss";
@@ -28,12 +27,12 @@ export const AddPost: React.FC = () => {
 	const navigate = useNavigate();
 	const inputFileRef = useRef<HTMLInputElement | null>(null);
 	const dispatch = useAppDispatch();
-	const { imageUrl, text, title, tags } = useSelector(
-		(state: RootState) => state.singlePost.post
+	const { imageUrl, text, title, tags } = useAppSelector(
+		(state) => state.singlePost.post
 	);
 
-	const isAuth = useSelector(selectIsAuth);
-	const isPostAbleToSend = useSelector(isReadyToSend);
+	const isAuth = useAppSelector(selectIsAuth);
+	const isPostAbleToSend = useAppSelector(isReadyToSend);
 	const { id } = useParams();
 	const isEditing = Boolean(id);
 	const handleChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {

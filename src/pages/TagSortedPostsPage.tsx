@@ -1,23 +1,23 @@
 import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 
 import { ErrorBlock } from "../components/ErrorBlock/ErrorBlock";
-import { Post } from "../components/Post";
+import { Post } from "../components/Post/Post";
 import { PostSkeleton } from "../components/Post/Skeleton";
 import { TagsBlock } from "../components/TagsBlock";
+import { MIDDLE_SCREEN_SIZE } from "../constants/baseValues";
 import { useScreenSize } from "../hooks/useScreenSize";
 import { fetchPosts } from "../redux/slices/posts";
 import { fetchTags } from "../redux/slices/posts";
-import { RootState, useAppDispatch } from "../redux/store";
+import { useAppDispatch, useAppSelector } from "../redux/store";
 import { getImageUrl } from "../utils/getImageUrl";
 
 export const TagSortedPostsPage = () => {
 	const dispatch = useAppDispatch();
-	const { posts, tags } = useSelector((state: RootState) => state.posts);
-	const { comments } = useSelector((state: RootState) => state.comments);
+	const { posts, tags } = useAppSelector((state) => state.posts);
+	const { comments } = useAppSelector((state) => state.comments);
 	const { tag } = useParams();
 	const currentPageTag = tag ? tag.toUpperCase() : "No tag title";
 	const isPostsLoading = posts.postsStatus === "loading";
@@ -25,12 +25,11 @@ export const TagSortedPostsPage = () => {
 	const currentTagPosts = posts.items.filter(({ tags }) =>
 		tags.some((item) => item === tag)
 	);
-	const userData = useSelector((state: RootState) => state.auth.data);
-	const { errorMessage } = useSelector(
-		(state: RootState) => state.posts.posts
-	);
+	const userData = useAppSelector((state) => state.auth.data);
+	const { errorMessage } = useAppSelector((state) => state.posts.posts);
 	const { screenWidth } = useScreenSize();
-	const isShowAdditionalInfo = screenWidth && screenWidth >= 900;
+	const isShowAdditionalInfo =
+		screenWidth && screenWidth >= MIDDLE_SCREEN_SIZE;
 
 	useEffect(() => {
 		dispatch(fetchPosts());

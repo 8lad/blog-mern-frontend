@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
 import Avatar from "@mui/material/Avatar";
 import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
@@ -10,12 +9,12 @@ import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 
 import NoAvatar from "../assets/hacker.png";
-import { Index } from "../components/AddComment";
 import { selectIsAuth } from "../redux/slices/auth";
 import { fetchComments } from "../redux/slices/comments";
-import { RootState, useAppDispatch } from "../redux/store";
+import { useAppDispatch, useAppSelector } from "../redux/store";
 
-import { SideBlock } from "./SideBlock";
+import { AddComment } from "./AddComment/AddComment";
+import { SideBlock } from "./SideBlock/SideBlock";
 
 interface CommentsBlockProps {
 	postId?: string;
@@ -23,14 +22,14 @@ interface CommentsBlockProps {
 
 export const CommentsBlock: React.FC<CommentsBlockProps> = ({ postId }) => {
 	const dispatch = useAppDispatch();
-	const { commentsStatus, comments } = useSelector(
-		(state: RootState) => state.comments
+	const { commentsStatus, comments } = useAppSelector(
+		(state) => state.comments
 	);
 	const isLoading = commentsStatus === "loading";
 	const currentComments = !postId
 		? comments
 		: comments.filter((comment) => comment.postId === postId);
-	const isAuth = useSelector(selectIsAuth);
+	const isAuth = useAppSelector(selectIsAuth);
 	const isShowAddCommentComponent = isAuth && postId;
 	const setAvatarImage = (imageUrl: string): string => {
 		return imageUrl
@@ -107,7 +106,7 @@ export const CommentsBlock: React.FC<CommentsBlockProps> = ({ postId }) => {
 					You don`t have any comments yet
 				</Typography>
 			)}
-			{isShowAddCommentComponent && <Index postId={postId} />}
+			{isShowAddCommentComponent && <AddComment postId={postId} />}
 		</SideBlock>
 	);
 };

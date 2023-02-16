@@ -1,20 +1,20 @@
-export type requestStatuses = "loading" | "loaded" | "error";
-export type postsSorting = "new" | "popular";
+export type RequestStatuses = "loading" | "loaded" | "error";
+export type PostsSorting = "new" | "popular";
 
-interface extraResponseData {
+interface ExtraResponseData {
 	createdAt?: string;
 	updatedAt?: string;
 	__v?: number;
 }
 
-export interface userDataInterface extends extraResponseData {
+export interface UserDataInterface extends ExtraResponseData {
 	_id: string;
 	fullName: string;
 	email: string;
 	avatarUrl: string;
 }
 
-export interface commentData extends extraResponseData {
+export interface CommentData extends ExtraResponseData {
 	user: {
 		fullName: string;
 		avatarUrl: string;
@@ -24,17 +24,17 @@ export interface commentData extends extraResponseData {
 	text: string;
 }
 
-export interface singlePost extends extraResponseData {
+export interface SinglePost extends ExtraResponseData {
 	_id: string;
 	title: string;
 	text: string;
 	tags: string[];
 	imageUrl: string;
-	user: userDataInterface;
+	user: UserDataInterface;
 	viewsCount: number;
 }
 
-export interface baseSinglePost {
+export interface BaseSinglePost {
 	text: string;
 	title: string;
 	tags: string[];

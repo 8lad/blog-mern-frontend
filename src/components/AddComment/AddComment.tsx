@@ -1,29 +1,27 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
 import NoAvatar from "../../assets/hacker.png";
+import { MIN_COMMENT_LENGTH } from "../../constants/baseValues";
 import { fetchSingleCommentData } from "../../redux/slices/comments";
-import { RootState, useAppDispatch } from "../../redux/store";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
 
 import styles from "./AddComment.module.scss";
 
-interface IndexProps {
+interface AddCommentProps {
 	postId: string;
 }
 
-export const Index: React.FC<IndexProps> = ({ postId }) => {
+export const AddComment: React.FC<AddCommentProps> = ({ postId }) => {
 	const [commentText, setCommentText] = useState<string>("");
-	const isAbleToSend: boolean = commentText.length < 3;
+	const isAbleToSend: boolean = commentText.length < MIN_COMMENT_LENGTH;
 	const enterTextHangler = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setCommentText(event.target.value);
 	};
 	const dispatch = useAppDispatch();
-	const { fullName, avatarUrl } = useSelector(
-		(state: RootState) => state.auth.data
-	);
+	const { fullName, avatarUrl } = useAppSelector((state) => state.auth.data);
 	const sendCommentData = () => {
 		const data = {
 			postId,

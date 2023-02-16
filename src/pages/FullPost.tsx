@@ -1,15 +1,14 @@
 import React, { useEffect } from "react";
 import ReactMarkdown from "react-markdown";
-import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 
 import { CommentsBlock } from "../components/CommentsBlock";
 import { ErrorBlock } from "../components/ErrorBlock/ErrorBlock";
-import { Post } from "../components/Post";
+import { Post } from "../components/Post/Post";
 import { PostSkeleton } from "../components/Post/Skeleton";
 import { fetchSinglePost } from "../redux/slices/singlePost";
-import { RootState, useAppDispatch } from "../redux/store";
+import { useAppDispatch, useAppSelector } from "../redux/store";
 
 import "react-toastify/dist/ReactToastify.css";
 
@@ -17,15 +16,13 @@ export const FullPost = () => {
 	const { id } = useParams();
 	const notify = () => toast("Loading post error");
 	const dispatch = useAppDispatch();
-	const { singlePostStatus, post } = useSelector(
-		(state: RootState) => state.singlePost
+	const { singlePostStatus, post } = useAppSelector(
+		(state) => state.singlePost
 	);
-	const { comments } = useSelector((state: RootState) => state.comments);
+	const { comments } = useAppSelector((state) => state.comments);
 	const isLoading = singlePostStatus === "loading";
 	const hasError = singlePostStatus === "error";
-	const { errorMessage } = useSelector(
-		(state: RootState) => state.singlePost
-	);
+	const { errorMessage } = useAppSelector((state) => state.singlePost);
 
 	useEffect(() => {
 		hasError && notify();

@@ -1,15 +1,16 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 
+import { TABS_SORT_NEW, TABS_SORT_POPULAR } from "../../constants/baseValues";
 import { setPostSorting } from "../../redux/slices/posts";
-import { RootState, useAppDispatch } from "../../redux/store";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
 
 export const CustomTabs: React.FC = () => {
 	const dispatch = useAppDispatch();
-	const { sorting } = useSelector((state: RootState) => state.posts.posts);
-	const sortingValue: number = sorting === "new" ? 0 : 1;
+	const { sorting } = useAppSelector((state) => state.posts.posts);
+	const sortingValue: number =
+		sorting === "new" ? TABS_SORT_NEW : TABS_SORT_POPULAR;
 
 	return (
 		<Tabs
