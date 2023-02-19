@@ -8,9 +8,8 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Skeleton from "@mui/material/Skeleton";
 
-import { APP_ROUTE_TAGS } from "../constants/routes";
-
-import { SideBlock } from "./SideBlock/SideBlock";
+import { APP_ROUTE_TAGS } from "../../constants/routes";
+import { SideBlock } from "../SideBlock/SideBlock";
 
 interface TagsBlockProps {
 	items: string[];

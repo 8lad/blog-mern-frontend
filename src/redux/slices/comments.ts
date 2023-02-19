@@ -69,7 +69,6 @@ const commentsSlice = createSlice({
 			}
 		);
 		builder.addCase(fetchSingleCommentData.pending, (state) => {
-			state.comments = [];
 			state.commentsStatus = "loading";
 			state.errorMessage = "";
 		});

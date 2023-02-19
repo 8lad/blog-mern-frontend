@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import Grid from "@mui/material/Grid";
 
-import { CommentsBlock } from "../components/CommentsBlock";
+import { CommentsBlock } from "../components/CommentsBlock/CommentsBlock";
 import { CustomTabs } from "../components/CustomTabs/CustomTabs";
 import { ErrorBlock } from "../components/ErrorBlock/ErrorBlock";
 import { ExtraInfo } from "../components/ExtraInfo/ExtraInfo";
 import { Post } from "../components/Post/Post";
 import { PostSkeleton } from "../components/Post/Skeleton";
-import { TagsBlock } from "../components/TagsBlock";
+import { TagsBlock } from "../components/TagsBlock/TagsBlock";
 import { MIDDLE_SCREEN_SIZE } from "../constants/baseValues";
 import { useScreenSize } from "../hooks/useScreenSize";
 import { fetchComments } from "../redux/slices/comments";
