@@ -11,6 +11,7 @@ import {
 	fetchImageUrl,
 	fetchSinglePost,
 	fetchSinglePostData,
+	fetchSinglePostDataPatch,
 	isReadyToSend,
 	removeImageUrl,
 	removeSinglePost,
@@ -83,7 +84,9 @@ export const AddPost: React.FC = () => {
 			_id: id ?? "",
 		};
 
-		dispatch(fetchSinglePostData(fields));
+		dispatch(
+			id ? fetchSinglePostDataPatch(fields) : fetchSinglePostData(fields)
+		);
 
 		id ? navigate(`${APP_ROUTE_POSTS}/${id}`) : navigate(APP_ROUTE_ROOT);
 	};
