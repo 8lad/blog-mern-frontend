@@ -43,7 +43,6 @@ export const Registration = () => {
 				.matches(/[A-Z]+/, "One uppercase character")
 				.matches(/[@$!%*#?&]+/, "One special character")
 				.matches(/\d+/, "One number"),
-			// .matches()
 		})
 		.required();
 	const {
