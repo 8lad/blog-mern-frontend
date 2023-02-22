@@ -52,9 +52,23 @@ export const fetchSinglePostData = createAsyncThunk<
 	{ rejectValue: string }
 >("singlePost/fetchSinglePostData", async (postData, thunkApi) => {
 	try {
-		const { data } = postData._id
-			? await axios.patch(`${APP_ROUTE_POSTS}/${postData._id}`, postData)
-			: await axios.post(APP_ROUTE_POSTS, postData);
+		const { data } = await axios.post(APP_ROUTE_POSTS, postData);
+		return data;
+	} catch (error) {
+		return thunkApi.rejectWithValue((error as Error).message);
+	}
+});
+
+export const fetchSinglePostDataPatch = createAsyncThunk<
+	void,
+	BaseSinglePost,
+	{ rejectValue: string }
+>("singlePost/fetchSinglePostDataPatch", async (postData, thunkApi) => {
+	try {
+		const { data } = await axios.patch(
+			`${APP_ROUTE_POSTS}/${postData._id}`,
+			postData
+		);
 		return data;
 	} catch (error) {
 		return thunkApi.rejectWithValue((error as Error).message);
@@ -132,6 +146,23 @@ const singlePost = createSlice({
 		});
 		builder.addCase(
 			fetchSinglePostData.rejected,
+			(state, action: PayloadAction<unknown>) => {
+				state.post = { ...initialState.post };
+				state.singlePostStatus = "error";
+				state.errorMessage = action.payload as string;
+			}
+		);
+		builder.addCase(fetchSinglePostDataPatch.pending, (state) => {
+			state.post = { ...initialState.post };
+			state.singlePostStatus = "loading";
+			state.errorMessage = "";
+		});
+		builder.addCase(fetchSinglePostDataPatch.fulfilled, (state) => {
+			state.singlePostStatus = "loaded";
+			state.errorMessage = "";
+		});
+		builder.addCase(
+			fetchSinglePostDataPatch.rejected,
 			(state, action: PayloadAction<unknown>) => {
 				state.post = { ...initialState.post };
 				state.singlePostStatus = "error";

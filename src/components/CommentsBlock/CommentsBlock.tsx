@@ -8,13 +8,12 @@ import ListItemText from "@mui/material/ListItemText";
 import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 
-import NoAvatar from "../assets/hacker.png";
-import { selectIsAuth } from "../redux/slices/auth";
-import { fetchComments } from "../redux/slices/comments";
-import { useAppDispatch, useAppSelector } from "../redux/store";
-
-import { AddComment } from "./AddComment/AddComment";
-import { SideBlock } from "./SideBlock/SideBlock";
+import NoAvatar from "../../assets/hacker.png";
+import { selectIsAuth } from "../../redux/slices/auth";
+import { fetchComments } from "../../redux/slices/comments";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
+import { AddComment } from "../AddComment/AddComment";
+import { SideBlock } from "../SideBlock/SideBlock";
 
 interface CommentsBlockProps {
 	postId?: string;

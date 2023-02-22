@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import * as yup from "yup";
 
 import NoAvatar from "../../assets/hacker.png";
 import { MIN_COMMENT_LENGTH } from "../../constants/baseValues";
@@ -14,25 +17,48 @@ interface AddCommentProps {
 	postId: string;
 }
 
+interface CommentDataInterface {
+	singleComment: string;
+}
+
 export const AddComment: React.FC<AddCommentProps> = ({ postId }) => {
-	const [commentText, setCommentText] = useState<string>("");
-	const isAbleToSend: boolean = commentText.length < MIN_COMMENT_LENGTH;
-	const enterTextHangler = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setCommentText(event.target.value);
-	};
 	const dispatch = useAppDispatch();
 	const { fullName, avatarUrl } = useAppSelector((state) => state.auth.data);
-	const sendCommentData = () => {
-		const data = {
+	const schema = yup
+		.object({
+			singleComment: yup
+				.string()
+				.trim()
+				.min(
+					MIN_COMMENT_LENGTH,
+					"The length should be more than 3 synbols"
+				)
+				.required("This field is required"),
+		})
+		.required();
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+		reset,
+	} = useForm<CommentDataInterface>({
+		defaultValues: {
+			singleComment: "",
+		},
+		mode: "onChange",
+		resolver: yupResolver(schema),
+	});
+	const onSubmit = (data: CommentDataInterface) => {
+		const commentData = {
 			postId,
-			text: commentText,
+			text: data.singleComment,
 			user: {
 				fullName,
 				avatarUrl,
 			},
 		};
-		dispatch(fetchSingleCommentData(data));
-		setCommentText("");
+		dispatch(fetchSingleCommentData(commentData));
+		reset();
 	};
 
 	const avatarImage = avatarUrl
@@ -43,24 +69,24 @@ export const AddComment: React.FC<AddCommentProps> = ({ postId }) => {
 		<>
 			<div className={styles.root}>
 				<Avatar classes={{ root: styles.avatar }} src={avatarImage} />
-				<div className={styles.form}>
+				<form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
 					<TextField
 						label="Left a comment"
 						variant="outlined"
 						maxRows={10}
 						multiline
 						fullWidth
-						value={commentText}
-						onChange={enterTextHangler}
+						error={Boolean(errors.singleComment)}
+						{...register("singleComment")}
+						helperText={
+							errors?.singleComment &&
+							errors.singleComment.message
+						}
 					/>
-					<Button
-						variant="contained"
-						disabled={isAbleToSend}
-						onClick={sendCommentData}
-					>
+					<Button variant="contained" type="submit">
 						Send
 					</Button>
-				</div>
+				</form>
 			</div>
 		</>
 	);

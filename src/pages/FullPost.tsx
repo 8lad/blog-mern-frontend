@@ -3,7 +3,7 @@ import ReactMarkdown from "react-markdown";
 import { useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 
-import { CommentsBlock } from "../components/CommentsBlock";
+import { CommentsBlock } from "../components/CommentsBlock/CommentsBlock";
 import { ErrorBlock } from "../components/ErrorBlock/ErrorBlock";
 import { Post } from "../components/Post/Post";
 import { PostSkeleton } from "../components/Post/Skeleton";

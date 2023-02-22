@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import { ErrorBlock } from "../components/ErrorBlock/ErrorBlock";
 import { Post } from "../components/Post/Post";
 import { PostSkeleton } from "../components/Post/Skeleton";
-import { TagsBlock } from "../components/TagsBlock";
+import { TagsBlock } from "../components/TagsBlock/TagsBlock";
 import { MIDDLE_SCREEN_SIZE } from "../constants/baseValues";
 import { useScreenSize } from "../hooks/useScreenSize";
 import { fetchPosts } from "../redux/slices/posts";
