@@ -2,10 +2,12 @@ import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Navigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
+import { yupResolver } from "@hookform/resolvers/yup";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import * as yup from "yup";
 
 import {
 	fetchAuth,
@@ -22,17 +24,31 @@ export const Login = () => {
 	const isAuth = useAppSelector(selectIsAuth);
 	const { errorMessage } = useAppSelector((state) => state.auth);
 	const notify = (message: string) => toast(message);
+	const schema = yup
+		.object({
+			email: yup
+				.string()
+				.trim()
+				.email("Please enter correct email")
+				.required("This field is required"),
+			passwordHash: yup
+				.string()
+				.trim()
+				.required("This field is required"),
+		})
+		.required();
 
 	const {
 		register,
 		handleSubmit,
-		formState: { errors, isValid },
+		formState: { errors },
 	} = useForm({
 		defaultValues: {
 			email: "",
 			passwordHash: "",
 		},
 		mode: "onChange",
+		resolver: yupResolver(schema),
 	});
 
 	const onSubmit = async (values: userAuthInputData) => {
@@ -65,9 +81,7 @@ export const Login = () => {
 						className={styles.field}
 						label="E-Mail"
 						type="email"
-						{...register("email", {
-							required: "Please, type email",
-						})}
+						{...register("email")}
 						error={Boolean(errors.email?.message)}
 						helperText={errors.email?.message}
 						fullWidth
@@ -78,16 +92,13 @@ export const Login = () => {
 						label="Password"
 						error={Boolean(errors.passwordHash?.message)}
 						helperText={errors.passwordHash?.message}
-						{...register("passwordHash", {
-							required: "Please, type password",
-						})}
+						{...register("passwordHash")}
 						fullWidth
 					/>
 					<Button
 						size="large"
 						type="submit"
 						variant="contained"
-						disabled={!isValid}
 						fullWidth
 					>
 						Log in

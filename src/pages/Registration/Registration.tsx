@@ -2,11 +2,13 @@ import React, { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { Navigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { yupResolver } from "@hookform/resolvers/yup";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import * as yup from "yup";
 
 import {
 	fetchAvatarUrl,
@@ -20,10 +22,34 @@ import { useAppDispatch, useAppSelector } from "../../redux/store";
 import styles from "./Registration.module.scss";
 
 export const Registration = () => {
+	const schema = yup
+		.object({
+			email: yup
+				.string()
+				.trim()
+				.required("This field is required")
+				.email("Please enter valid email"),
+			fullName: yup
+				.string()
+				.trim()
+				.required("This field is required")
+				.min(2, "You should put more letters"),
+			passwordHash: yup
+				.string()
+				.trim()
+				.required("This field is required")
+				.min(6, "The password should be more than 6 letters")
+				.matches(/[a-z]+/, "One lowercase character")
+				.matches(/[A-Z]+/, "One uppercase character")
+				.matches(/[@$!%*#?&]+/, "One special character")
+				.matches(/\d+/, "One number"),
+			// .matches()
+		})
+		.required();
 	const {
 		register,
 		handleSubmit,
-		formState: { errors, isValid },
+		formState: { errors },
 	} = useForm({
 		defaultValues: {
 			email: "",
@@ -31,6 +57,7 @@ export const Registration = () => {
 			fullName: "",
 		},
 		mode: "onChange",
+		resolver: yupResolver(schema),
 	});
 
 	const {
@@ -104,9 +131,7 @@ export const Registration = () => {
 					label="Full name"
 					helperText={errors.fullName?.message}
 					error={Boolean(errors.fullName?.message)}
-					{...register("fullName", {
-						required: "Please, enter your full name",
-					})}
+					{...register("fullName")}
 					fullWidth
 				/>
 				<TextField
@@ -114,9 +139,7 @@ export const Registration = () => {
 					label="E-Mail"
 					helperText={errors.email?.message}
 					error={Boolean(errors.email?.message)}
-					{...register("email", {
-						required: "Please, enter your email",
-					})}
+					{...register("email")}
 					fullWidth
 				/>
 				<TextField
@@ -125,16 +148,13 @@ export const Registration = () => {
 					label="Password"
 					helperText={errors.passwordHash?.message}
 					error={Boolean(errors.passwordHash?.message)}
-					{...register("passwordHash", {
-						required: "Please, enter new password",
-					})}
+					{...register("passwordHash")}
 					fullWidth
 				/>
 				<Button
 					type="submit"
 					size="large"
 					variant="contained"
-					disabled={!isValid}
 					fullWidth
 				>
 					Sing in

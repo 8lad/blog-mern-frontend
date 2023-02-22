@@ -26,15 +26,25 @@ export const AddComment: React.FC<AddCommentProps> = ({ postId }) => {
 	const { fullName, avatarUrl } = useAppSelector((state) => state.auth.data);
 	const schema = yup
 		.object({
-			singleComment: yup.string().trim().min(MIN_COMMENT_LENGTH),
+			singleComment: yup
+				.string()
+				.trim()
+				.min(
+					MIN_COMMENT_LENGTH,
+					"The length should be more than 3 synbols"
+				)
+				.required("This field is required"),
 		})
 		.required();
 	const {
 		register,
 		handleSubmit,
-		formState: { isValid, isDirty },
+		formState: { errors },
 		reset,
 	} = useForm<CommentDataInterface>({
+		defaultValues: {
+			singleComment: "",
+		},
 		mode: "onChange",
 		resolver: yupResolver(schema),
 	});
@@ -66,13 +76,14 @@ export const AddComment: React.FC<AddCommentProps> = ({ postId }) => {
 						maxRows={10}
 						multiline
 						fullWidth
+						error={Boolean(errors.singleComment)}
 						{...register("singleComment")}
+						helperText={
+							errors?.singleComment &&
+							errors.singleComment.message
+						}
 					/>
-					<Button
-						variant="contained"
-						type="submit"
-						disabled={!isDirty || !isValid}
-					>
+					<Button variant="contained" type="submit">
 						Send
 					</Button>
 				</form>
