@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { Navigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -60,10 +59,8 @@ export const Registration = () => {
 	});
 
 	const {
-		errorMessage,
 		data: { avatarUrl },
 	} = useAppSelector((state) => state.auth);
-	const notify = (message: string) => toast(message);
 
 	const isAuth = useAppSelector(selectIsAuth);
 	const dispatch = useAppDispatch();
@@ -93,10 +90,6 @@ export const Registration = () => {
 	const avatarImage = avatarUrl
 		? `${import.meta.env.VITE_API_URL}${avatarUrl}`
 		: "";
-
-	useEffect(() => {
-		errorMessage && notify("Wrong authorization data");
-	}, [errorMessage]);
 
 	useEffect(() => {
 		dispatch(removeAvatarImage);

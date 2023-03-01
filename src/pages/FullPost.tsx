@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import { useParams } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
 
 import { CommentsBlock } from "../components/CommentsBlock/CommentsBlock";
 import { ErrorBlock } from "../components/ErrorBlock/ErrorBlock";
@@ -10,11 +9,8 @@ import { PostSkeleton } from "../components/Post/Skeleton";
 import { fetchSinglePost } from "../redux/slices/singlePost";
 import { useAppDispatch, useAppSelector } from "../redux/store";
 
-import "react-toastify/dist/ReactToastify.css";
-
 export const FullPost = () => {
 	const { id } = useParams();
-	const notify = () => toast("Loading post error");
 	const dispatch = useAppDispatch();
 	const { singlePostStatus, post } = useAppSelector(
 		(state) => state.singlePost
@@ -25,7 +21,6 @@ export const FullPost = () => {
 	const { errorMessage } = useAppSelector((state) => state.singlePost);
 
 	useEffect(() => {
-		hasError && notify();
 		if (id && !hasError) {
 			dispatch(fetchSinglePost(id));
 		}
@@ -59,18 +54,6 @@ export const FullPost = () => {
 				<ReactMarkdown>{post.text}</ReactMarkdown>
 			</Post>
 			<CommentsBlock postId={id} />
-			<ToastContainer
-				position="top-right"
-				autoClose={5000}
-				hideProgressBar={false}
-				newestOnTop={false}
-				closeOnClick
-				rtl={false}
-				pauseOnFocusLoss
-				draggable
-				pauseOnHover
-				theme="dark"
-			/>
 		</>
 	);
 };

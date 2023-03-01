@@ -31,7 +31,7 @@ export const AddComment: React.FC<AddCommentProps> = ({ postId }) => {
 				.trim()
 				.min(
 					MIN_COMMENT_LENGTH,
-					"The length should be more than 3 synbols"
+					"The length should be more than 3 symbols"
 				)
 				.required("This field is required"),
 		})
