@@ -67,7 +67,11 @@ export const fetchAvatarUrl = createAsyncThunk<
 	}
 });
 
-export const fetchAuthMe = createAsyncThunk("auth/fetchAuthMe", async () => {
+export const fetchAuthMe = createAsyncThunk<
+	UserDataInterface,
+	void,
+	{ rejectValue: string }
+>("auth/fetchAuthMe", async () => {
 	const { data } = await axios.get(`${APP_ROUTE_AUTH}${APP_ROUTE_ME}`);
 	return data;
 });

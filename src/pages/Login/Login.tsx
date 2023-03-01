@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { Navigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
@@ -16,14 +15,11 @@ import {
 } from "../../redux/slices/auth";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 
-import "react-toastify/dist/ReactToastify.css";
 import styles from "./Login.module.scss";
 
 export const Login = () => {
 	const dispatch = useAppDispatch();
 	const isAuth = useAppSelector(selectIsAuth);
-	const { errorMessage } = useAppSelector((state) => state.auth);
-	const notify = (message: string) => toast(message);
 	const schema = yup
 		.object({
 			email: yup
@@ -53,18 +49,11 @@ export const Login = () => {
 
 	const onSubmit = async (values: userAuthInputData) => {
 		const data = await dispatch(fetchAuth(values));
-		if (!data.payload) {
-			notify("Incorrect password");
-		}
 
 		if (typeof data.payload === "object" && "token" in data.payload) {
 			window.localStorage.setItem("token", data.payload.token as string);
 		}
 	};
-
-	useEffect(() => {
-		errorMessage && notify("Wrong authorization data");
-	}, [errorMessage]);
 
 	if (isAuth) {
 		return <Navigate to="/" />;
@@ -105,18 +94,6 @@ export const Login = () => {
 					</Button>
 				</form>
 			</Paper>
-			<ToastContainer
-				position="top-right"
-				autoClose={5000}
-				hideProgressBar={false}
-				newestOnTop={false}
-				closeOnClick
-				rtl={false}
-				pauseOnFocusLoss
-				draggable
-				pauseOnHover
-				theme="dark"
-			/>
 		</>
 	);
 };

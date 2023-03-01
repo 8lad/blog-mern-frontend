@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 import Container from "@mui/material/Container";
 
 import { Header } from "./components/Header/Header";
@@ -20,10 +22,18 @@ import { NotFound } from "./pages/NotFound/NotFound";
 import { Registration } from "./pages/Registration/Registration";
 import { TagSortedPostsPage } from "./pages/TagSortedPostsPage";
 import { fetchAuthMe } from "./redux/slices/auth";
-import { useAppDispatch } from "./redux/store";
+import { RootState, useAppDispatch } from "./redux/store";
+
+import "react-toastify/dist/ReactToastify.css";
 
 export const App = () => {
 	const dispatch = useAppDispatch();
+	const notify = (message: string) => toast(message);
+	const { errorMessage } = useSelector((state: RootState) => state.errors);
+
+	useEffect(() => {
+		errorMessage && notify(errorMessage);
+	}, [errorMessage]);
 
 	useEffect(() => {
 		dispatch(fetchAuthMe());
@@ -56,6 +66,20 @@ export const App = () => {
 					<Route path="*" element={<NotFound />} />
 				</Routes>
 			</Container>
+			<ToastContainer
+				position="top-right"
+				autoClose={5000}
+				hideProgressBar={false}
+				newestOnTop={false}
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+				theme="dark"
+			/>
 		</>
 	);
 };
+
+// Argument of type 'AsyncThunkAction<UserDataInterface, void, { rejectValue: string; state?: unknown; dispatch?: Dispatch<AnyAction> | undefined; extra?: unknown; serializedErrorType?: unknown; pendingMeta?: unknown; fulfilledMeta?: unknown; rejectedMeta?: unknown; }>' is not assignable to parameter of type 'AnyAction'.
