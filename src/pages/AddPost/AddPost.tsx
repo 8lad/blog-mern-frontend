@@ -1,9 +1,12 @@
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
+import { useForm } from "react-hook-form";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import SimpleMDE from "react-simplemde-editor";
+import { yupResolver } from "@hookform/resolvers/yup";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
+import * as yup from "yup";
 
 import { APP_ROUTE_POSTS, APP_ROUTE_ROOT } from "../../constants/routes";
 import { selectIsAuth } from "../../redux/slices/auth";
@@ -12,30 +15,71 @@ import {
 	fetchSinglePost,
 	fetchSinglePostData,
 	fetchSinglePostDataPatch,
-	isReadyToSend,
 	removeImageUrl,
 	removeSinglePost,
-	setTags,
 	setText,
-	setTitle,
 } from "../../redux/slices/singlePost";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
+import { getArrayFromString } from "../../utils/getArrayFromString";
+import { getStringFromArray } from "../../utils/getStringFromArray";
 
 import "easymde/dist/easymde.min.css";
 import styles from "./AddPost.module.scss";
 
+interface AddPostFormData {
+	tags: string;
+	title: string;
+}
+
 export const AddPost: React.FC = () => {
 	const navigate = useNavigate();
-	const inputFileRef = useRef<HTMLInputElement | null>(null);
 	const dispatch = useAppDispatch();
+
+	const inputFileRef = useRef<HTMLInputElement | null>(null);
 	const { imageUrl, text, title, tags } = useAppSelector(
 		(state) => state.singlePost.post
 	);
 
+	const schema = yup
+		.object({
+			title: yup
+				.string()
+				.trim()
+				.required("This field is required")
+				.min(3, "Please enter more information")
+				.matches(
+					/^[a-z | A-Z | 0-9 | ? | . | , | ! | : ]+$/,
+					"Please enter only letters or numbers, without special symbols"
+				),
+			tags: yup
+				.string()
+				.trim()
+				.required("This field is required")
+				.min(3, "Please enter more information")
+				.matches(
+					/^[a-z | A-Z | 0-9 ]+$/,
+					"Please enter only letters or numbers, without special symbols"
+				),
+		})
+		.required();
+	const {
+		register,
+		handleSubmit,
+		setValue,
+		formState: { errors },
+	} = useForm({
+		defaultValues: {
+			title: title,
+			tags: getStringFromArray(tags),
+		},
+		mode: "onChange",
+		resolver: yupResolver(schema),
+	});
+
 	const isAuth = useAppSelector(selectIsAuth);
-	const isPostAbleToSend = useAppSelector(isReadyToSend);
 	const { id } = useParams();
 	const isEditing = Boolean(id);
+
 	const handleChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const formData = new FormData();
 		if (event.target.files) {
@@ -73,13 +117,11 @@ export const AddPost: React.FC = () => {
 		[]
 	);
 
-	const onSubmit = () => {
+	const onSubmit = (data: AddPostFormData) => {
 		const fields = {
 			text,
-			title,
-			tags: Array.isArray(tags)
-				? tags
-				: (tags as string).replaceAll(",", " ").split(" "),
+			title: data.title,
+			tags: getArrayFromString(data.tags),
 			imageUrl,
 			_id: id ?? "",
 		};
@@ -95,84 +137,90 @@ export const AddPost: React.FC = () => {
 		id ? dispatch(fetchSinglePost(id)) : dispatch(removeSinglePost());
 	}, [dispatch, id]);
 
-	if (!window.localStorage.getItem("token") && !isAuth) {
+	useEffect(() => {
+		setValue("title", title);
+		setValue("tags", getStringFromArray(tags));
+	}, [setValue, tags, title]);
+
+	if (!window.localStorage.getItem("token-mern") && !isAuth) {
 		return <Navigate to={APP_ROUTE_ROOT} />;
 	}
 
 	return (
-		<Paper style={{ padding: 30 }}>
-			<Button
-				variant="outlined"
-				size="large"
-				onClick={() =>
-					inputFileRef.current ? inputFileRef.current.click() : false
-				}
-			>
-				Upload an image
-			</Button>
-			<input
-				ref={inputFileRef}
-				type="file"
-				onChange={handleChangeFile}
-				hidden
-			/>
-			{imageUrl && (
-				<>
-					<Button
-						variant="contained"
-						color="error"
-						size="large"
-						onClick={removeImage}
-						sx={{ ml: "10px" }}
-					>
-						Delete
-					</Button>
-					<img
-						className={styles.image}
-						src={`${import.meta.env.VITE_API_URL}${imageUrl}`}
-						alt="Uploaded"
-					/>
-				</>
-			)}
-			<br />
-			<br />
-			<TextField
-				classes={{ root: styles.title }}
-				variant="standard"
-				placeholder="The post title..."
-				value={title}
-				onChange={(event) => dispatch(setTitle(event.target.value))}
-				fullWidth
-			/>
-			<TextField
-				classes={{ root: styles.tags }}
-				variant="standard"
-				placeholder="Tags"
-				value={Array.isArray(tags) ? tags.join(" ") : tags}
-				onChange={(event) => dispatch(setTags(event.target.value))}
-				fullWidth
-			/>
-			<SimpleMDE
-				className={styles.editor}
-				value={text}
-				onChange={onSetText}
-				options={options}
-			/>
-			<div className={styles.buttons}>
+		<Paper style={{ padding: 20 }}>
+			<div className={styles.topButtons}>
 				<Button
+					variant="outlined"
 					size="large"
-					variant="contained"
-					onClick={onSubmit}
-					disabled={!isPostAbleToSend}
+					onClick={() =>
+						inputFileRef.current
+							? inputFileRef.current.click()
+							: false
+					}
 				>
-					{isEditing ? "Edit" : "Publish"}
+					Upload an image
 				</Button>
-				<Link to={APP_ROUTE_ROOT}>
-					<Button onClick={removePost} size="large">
-						Cancel
-					</Button>
-				</Link>
+				<input
+					ref={inputFileRef}
+					type="file"
+					onChange={handleChangeFile}
+					hidden
+				/>
+				{imageUrl && (
+					<>
+						<Button
+							variant="contained"
+							color="error"
+							size="large"
+							onClick={removeImage}
+							sx={{ ml: "10px" }}
+						>
+							Delete
+						</Button>
+						<img
+							className={styles.image}
+							src={`${import.meta.env.VITE_API_URL}${imageUrl}`}
+							alt="Uploaded"
+						/>
+					</>
+				)}
 			</div>
+			<form onSubmit={handleSubmit(onSubmit)}>
+				<TextField
+					classes={{ root: styles.title }}
+					variant="standard"
+					placeholder="The post title..."
+					fullWidth
+					{...register("title")}
+					error={Boolean(errors?.title)}
+					helperText={errors?.title && errors?.title?.message}
+				/>
+				<TextField
+					classes={{ root: styles.tags }}
+					variant="standard"
+					placeholder="Tags"
+					fullWidth
+					{...register("tags")}
+					error={Boolean(errors?.tags)}
+					helperText={errors?.tags && errors?.tags.message}
+				/>
+				<SimpleMDE
+					className={styles.editor}
+					value={text}
+					onChange={onSetText}
+					options={options}
+				/>
+				<div className={styles.buttons}>
+					<Button type="submit" size="large" variant="contained">
+						{isEditing ? "Edit" : "Publish"}
+					</Button>
+					<Link to={APP_ROUTE_ROOT}>
+						<Button onClick={removePost} size="large">
+							Cancel
+						</Button>
+					</Link>
+				</div>
+			</form>
 		</Paper>
 	);
 };

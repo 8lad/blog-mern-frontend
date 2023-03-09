@@ -20,7 +20,7 @@ export const Header: React.FC = () => {
 
 	const onClickLogout = () => {
 		dispatch(logout());
-		window.localStorage.removeItem("token");
+		window.localStorage.removeItem("token-mern");
 	};
 
 	return (

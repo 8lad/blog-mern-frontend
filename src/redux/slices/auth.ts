@@ -17,13 +17,13 @@ interface InitialState {
 	errorMessage?: string;
 }
 
-export interface userAuthInputData {
+export interface UserAuthInputData {
 	email: string;
 	passwordHash: string;
 	avatarUrl?: string;
 }
 
-export interface userSingInData extends userAuthInputData {
+export interface UserSingInData extends UserAuthInputData {
 	fullName: string;
 }
 
@@ -40,7 +40,7 @@ const initialState: InitialState = {
 
 export const fetchAuth = createAsyncThunk<
 	UserDataInterface,
-	userAuthInputData,
+	UserAuthInputData,
 	{ rejectValue: string }
 >("auth/fetchAuth", async (params, thunkApi) => {
 	try {
@@ -78,7 +78,7 @@ export const fetchAuthMe = createAsyncThunk<
 
 export const fetchRegister = createAsyncThunk<
 	UserDataInterface,
-	userSingInData,
+	UserSingInData,
 	{ rejectValue: string }
 >("auth/fetchRegister", async (params, thunkApi) => {
 	try {

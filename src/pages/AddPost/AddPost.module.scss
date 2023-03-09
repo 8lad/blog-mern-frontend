@@ -24,7 +24,7 @@
 }
 
 .editor {
-	margin: 30px -30px;
+	margin: 20px -20px;
 
 	:global {
 		.cm-s-easymde {
@@ -43,5 +43,25 @@
 
 	button {
 		margin-right: 15px;
+	}
+}
+
+.topButtons {
+	display: flex;
+	width: 100%;
+	flex-wrap: wrap;
+	img {
+		display: block;
+		width: 100%;
+		margin-bottom: 20px;
+	}
+	@media (max-width: 500px) {
+		flex-direction: column;
+		button {
+			margin-left: 0;
+		}
+		button:first-child {
+			margin-bottom: 15px;
+		}
 	}
 }

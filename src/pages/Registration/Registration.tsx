@@ -14,7 +14,7 @@ import {
 	fetchRegister,
 	removeAvatarImage,
 	selectIsAuth,
-	userSingInData,
+	UserSingInData,
 } from "../../redux/slices/auth";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 
@@ -66,12 +66,15 @@ export const Registration = () => {
 	const dispatch = useAppDispatch();
 	const inputFileRef = useRef<null | HTMLInputElement>(null);
 
-	const onSubmit = async (values: userSingInData) => {
+	const onSubmit = async (values: UserSingInData) => {
 		const allUserData = { ...values, avatarUrl };
 		const data = await dispatch(fetchRegister(allUserData));
 
 		if (typeof data.payload === "object" && "token" in data.payload) {
-			window.localStorage.setItem("token", data.payload.token as string);
+			window.localStorage.setItem(
+				"token-mern",
+				data.payload.token as string
+			);
 		}
 	};
 

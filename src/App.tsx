@@ -36,7 +36,9 @@ export const App = () => {
 	}, [errorMessage]);
 
 	useEffect(() => {
-		dispatch(fetchAuthMe());
+		if ("token-mern" in localStorage) {
+			dispatch(fetchAuthMe());
+		}
 	}, [dispatch]);
 
 	return (
@@ -81,5 +83,3 @@ export const App = () => {
 		</>
 	);
 };
-
-// Argument of type 'AsyncThunkAction<UserDataInterface, void, { rejectValue: string; state?: unknown; dispatch?: Dispatch<AnyAction> | undefined; extra?: unknown; serializedErrorType?: unknown; pendingMeta?: unknown; fulfilledMeta?: unknown; rejectedMeta?: unknown; }>' is not assignable to parameter of type 'AnyAction'.

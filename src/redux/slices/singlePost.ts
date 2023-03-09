@@ -96,14 +96,6 @@ const singlePost = createSlice({
 			state.post.text = action.payload;
 			state.singlePostStatus = "loaded";
 		},
-		setTitle: (state, action) => {
-			state.post.title = action.payload;
-			state.singlePostStatus = "loaded";
-		},
-		setTags: (state, action) => {
-			state.post.tags = action.payload;
-			state.singlePostStatus = "loaded";
-		},
 		removeImageUrl: (state) => {
 			state.post.imageUrl = "";
 			state.singlePostStatus = "loaded";
@@ -190,11 +182,5 @@ const singlePost = createSlice({
 	},
 });
 
-export const isReadyToSend = ({
-	singlePost: {
-		post: { text, title, tags },
-	},
-}: RootState) => Boolean(text && title && tags.length);
 export const singlePostReducer = singlePost.reducer;
-export const { setText, setTitle, setTags, removeImageUrl, removeSinglePost } =
-	singlePost.actions;
+export const { setText, removeImageUrl, removeSinglePost } = singlePost.actions;
