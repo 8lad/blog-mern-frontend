@@ -26,6 +26,7 @@ export const Home = () => {
 	const { errorMessage } = useAppSelector((state) => state.posts.posts);
 	const { screenWidth } = useScreenSize();
 	const isBigScreen = screenWidth && screenWidth >= MIDDLE_SCREEN_SIZE;
+	const hasNoPosts = Boolean(!posts.items.length) && !isPostsLoading;
 
 	useEffect(() => {
 		dispatch(fetchPosts(sorting));
@@ -53,6 +54,12 @@ export const Home = () => {
 			)}
 			<Grid container spacing={4}>
 				<Grid xs={12} md={8} item>
+					{hasNoPosts && (
+						<h2>
+							There are not any posts here 😞. Try again later, or
+							sign in and create your own 😃!
+						</h2>
+					)}
 					{(isPostsLoading ? [...Array(5)] : posts.items).map(
 						(obj, index: number) =>
 							isPostsLoading ? (

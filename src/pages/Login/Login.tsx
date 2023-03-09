@@ -11,7 +11,7 @@ import * as yup from "yup";
 import {
 	fetchAuth,
 	selectIsAuth,
-	userAuthInputData,
+	UserAuthInputData,
 } from "../../redux/slices/auth";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 
@@ -47,11 +47,13 @@ export const Login = () => {
 		resolver: yupResolver(schema),
 	});
 
-	const onSubmit = async (values: userAuthInputData) => {
+	const onSubmit = async (values: UserAuthInputData) => {
 		const data = await dispatch(fetchAuth(values));
-
 		if (typeof data.payload === "object" && "token" in data.payload) {
-			window.localStorage.setItem("token", data.payload.token as string);
+			window.localStorage.setItem(
+				"token-mern",
+				data.payload.token as string
+			);
 		}
 	};
 

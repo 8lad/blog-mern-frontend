@@ -10,6 +10,9 @@
 .inner {
 	display: flex;
 	justify-content: space-between;
+	@media (max-width: 500px) {
+		flex-direction: column;
+	}
 }
 
 .logo {
@@ -22,7 +25,10 @@
 	border-radius: 5px;
 	padding: 0 10px;
 	text-decoration: none;
-
+	@media (max-width: 500px) {
+		margin-bottom: 20px;
+		text-align: center;
+	}
 	&:hover {
 		background-color: $header-logo-hover-background;
 	}
@@ -35,5 +41,12 @@
 
 	a {
 		text-decoration: none;
+	}
+	@media (max-width: 500px) {
+		display: flex;
+		justify-content: space-between;
+		button {
+			margin-left: 0;
+		}
 	}
 }
