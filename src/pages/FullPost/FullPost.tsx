@@ -2,12 +2,12 @@ import React, { useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import { useParams } from "react-router-dom";
 
-import { CommentsBlock } from "../components/CommentsBlock/CommentsBlock";
-import { ErrorBlock } from "../components/ErrorBlock/ErrorBlock";
-import { Post } from "../components/Post/Post";
-import { PostSkeleton } from "../components/Post/Skeleton";
-import { fetchSinglePost } from "../redux/slices/singlePost";
-import { useAppDispatch, useAppSelector } from "../redux/store";
+import { CommentsBlock } from "../../components/CommentsBlock/CommentsBlock";
+import { ErrorBlock } from "../../components/ErrorBlock/ErrorBlock";
+import { Post } from "../../components/Post/Post";
+import { PostSkeleton } from "../../components/Post/Skeleton";
+import { fetchSinglePost } from "../../redux/slices/singlePost";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
 
 export const FullPost = () => {
 	const { id } = useParams();
