@@ -3,16 +3,16 @@ import { useParams } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 
-import { ErrorBlock } from "../components/ErrorBlock/ErrorBlock";
-import { Post } from "../components/Post/Post";
-import { PostSkeleton } from "../components/Post/Skeleton";
-import { TagsBlock } from "../components/TagsBlock/TagsBlock";
-import { MIDDLE_SCREEN_SIZE } from "../constants/baseValues";
-import { useScreenSize } from "../hooks/useScreenSize";
-import { fetchPosts } from "../redux/slices/posts";
-import { fetchTags } from "../redux/slices/posts";
-import { useAppDispatch, useAppSelector } from "../redux/store";
-import { getImageUrl } from "../utils/getImageUrl";
+import { ErrorBlock } from "../../components/ErrorBlock/ErrorBlock";
+import { Post } from "../../components/Post/Post";
+import { PostSkeleton } from "../../components/Post/Skeleton";
+import { TagsBlock } from "../../components/TagsBlock/TagsBlock";
+import { MIDDLE_SCREEN_SIZE } from "../../constants/baseValues";
+import { useScreenSize } from "../../hooks/useScreenSize";
+import { fetchPosts } from "../../redux/slices/posts";
+import { fetchTags } from "../../redux/slices/posts";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
+import { getImageUrl } from "../../utils/getImageUrl";
 
 export const TagSortedPostsPage = () => {
 	const dispatch = useAppDispatch();
